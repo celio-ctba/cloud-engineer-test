@@ -1,0 +1,117 @@
+{
+  "Distribution": {
+    "Id": "E1A2B3C4D5E6F7",
+    "ARN": "arn:aws:cloudfront::123456789012:distribution/E1A2B3C4D5E6F7",
+    "Status": "Deployed",
+    "LastModifiedTime": "2024-01-10T15:30:00Z",
+    "DomainName": "d1a2b3c4d5e6f7.cloudfront.net",
+    "Aliases": {
+      "Quantity": 2,
+      "Items": [
+        "api.plooral.com",
+        "www.plooral.com"
+      ]
+    },
+    "Origins": {
+      "Quantity": 2,
+      "Items": [
+        {
+          "Id": "alb-origin",
+          "DomainName": "plooral-api-prod-alb-1234567890.us-east-1.elb.amazonaws.com",
+          "OriginPath": "",
+          "CustomHeaders": {
+            "Quantity": 1,
+            "Items": [
+              {
+                "HeaderName": "X-Origin-Verify",
+                "HeaderValue": "plooral-secret-header-value-2024"
+              }
+            ]
+          },
+          "CustomOriginConfig": {
+            "HTTPPort": 80,
+            "HTTPSPort": 443,
+            "OriginProtocolPolicy": "https-only",
+            "OriginSslProtocols": {
+              "Quantity": 2,
+              "Items": [
+                "TLSv1.2",
+                "TLSv1.1"
+              ]
+            },
+            "OriginReadTimeout": 30,
+            "OriginKeepaliveTimeout": 5
+          }
+        },
+        {
+          "Id": "s3-static-origin",
+          "DomainName": "plooral-static-assets.s3.us-east-1.amazonaws.com",
+          "OriginPath": "",
+          "S3OriginConfig": {
+            "OriginAccessIdentity": ""
+          }
+        }
+      ]
+    },
+    "DefaultCacheBehavior": {
+      "TargetOriginId": "alb-origin",
+      "ViewerProtocolPolicy": "redirect-to-https",
+      "AllowedMethods": {
+        "Quantity": 7,
+        "Items": [
+          "GET",
+          "HEAD",
+          "OPTIONS",
+          "PUT",
+          "POST",
+          "PATCH",
+          "DELETE"
+        ],
+        "CachedMethods": {
+          "Quantity": 2,
+          "Items": [
+            "GET",
+            "HEAD"
+          ]
+        }
+      },
+      "Compress": true,
+      "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+      "OriginRequestPolicyId": "216adef6-5c7f-47e4-b989-5492eafa07d3",
+      "ResponseHeadersPolicyId": null
+    },
+    "CacheBehaviors": {
+      "Quantity": 2,
+      "Items": [
+        {
+          "PathPattern": "/static/*",
+          "TargetOriginId": "s3-static-origin",
+          "ViewerProtocolPolicy": "redirect-to-https",
+          "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+          "Compress": true
+        },
+        {
+          "PathPattern": "/api/health",
+          "TargetOriginId": "alb-origin",
+          "ViewerProtocolPolicy": "https-only",
+          "CachePolicyId": "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
+        }
+      ]
+    },
+    "PriceClass": "PriceClass_100",
+    "Enabled": true,
+    "ViewerCertificate": {
+      "ACMCertificateArn": "arn:aws:acm:us-east-1:123456789012:certificate/a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "SSLSupportMethod": "sni-only",
+      "MinimumProtocolVersion": "TLSv1.2_2019"
+    },
+    "WebACLId": "arn:aws:wafv2:us-east-1:123456789012:global/webacl/plooral-prod-waf/a1b2c3d4-5678-90ab-cdef-1234567890ab",
+    "HttpVersion": "http2",
+    "Logging": {
+      "Enabled": false,
+      "IncludeCookies": false,
+      "Bucket": "",
+      "Prefix": ""
+    }
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "snapshotTime": "2024-01-15T14:20:00Z",
+  "dbInstance": "plooral-aurora-prod-instance-1",
+  "engine": "aurora-postgresql",
+  "engineVersion": "15.4",
+  "metrics": {
+    "DBLoad": {
+      "timestamps": [
+        "2024-01-15T14:00:00Z",
+        "2024-01-15T14:05:00Z",
+        "2024-01-15T14:10:00Z",
+        "2024-01-15T14:15:00Z",
+        "2024-01-15T14:20:00Z"
+      ],
+      "values": [2.1, 4.5, 8.9, 15.2, 18.7],
+      "unit": "Average Active Sessions",
+      "vCPUs": 4,
+      "note": "Values above vCPU count indicate CPU saturation"
+    },
+    "DBLoadCPU": {
+      "timestamps": [
+        "2024-01-15T14:00:00Z",
+        "2024-01-15T14:05:00Z",
+        "2024-01-15T14:10:00Z",
+        "2024-01-15T14:15:00Z",
+        "2024-01-15T14:20:00Z"
+      ],
+      "values": [1.8, 3.9, 7.2, 12.4, 15.1]
+    },
+    "DBLoadNonCPU": {
+      "timestamps": [
+        "2024-01-15T14:00:00Z",
+        "2024-01-15T14:05:00Z",
+        "2024-01-15T14:10:00Z",
+        "2024-01-15T14:15:00Z",
+        "2024-01-15T14:20:00Z"
+      ],
+      "values": [0.3, 0.6, 1.7, 2.8, 3.6],
+      "note": "Primarily IO:DataFileRead and LWLock waits"
+    }
+  },
+  "topSQL": [
+    {
+      "rank": 1,
+      "sqlId": "abc123def456",
+      "sqlText": "SELECT u.id as user_id, j.id as job_id, j.title, c.name as company_name, COALESCE(m.score, 0) as base_score, (SELECT COUNT(*) FROM user_skills us JOIN job_skills js ON us.skill_id = js.skill_id WHERE us.user_id = u.id AND js.job_id = j.id) as skill_match_count, (SELECT AVG(rating) FROM company_reviews cr WHERE cr.company_id = c.id) as company_rating FROM users u CROSS JOIN jobs j JOIN companies c ON j.company_id = c.id LEFT JOIN user_job_matches m ON u.id = m.user_id AND j.id = m.job_id WHERE u.id = $1 AND j.status = 'active' AND j.created_at > NOW() - INTERVAL '90 days'...",
+      "dbLoad": 12.4,
+      "dbLoadPercent": 66.3,
+      "avgLatency": 15234,
+      "avgLatencyUnit": "ms",
+      "callsPerSecond": 2.3,
+      "rowsExamined": 8901234,
+      "rowsReturned": 100,
+      "waitEvents": {
+        "CPU": 85.2,
+        "IO:DataFileRead": 10.5,
+        "LWLock:buffer_mapping": 4.3
+      },
+      "note": "NEW QUERY - User recommendations (v2.5.0) - CROSS JOIN causing cartesian product"
+    },
+    {
+      "rank": 2,
+      "sqlId": "ghi789jkl012",
+      "sqlText": "SELECT id, email, first_name, last_name, preference_json FROM users WHERE id = $1",
+      "dbLoad": 1.2,
+      "dbLoadPercent": 6.4,
+      "avgLatency": 45,
+      "avgLatencyUnit": "ms",
+      "callsPerSecond": 89.5,
+      "rowsExamined": 1,
+      "rowsReturned": 1,
+      "waitEvents": {
+        "CPU": 92.1,
+        "IO:DataFileRead": 7.9
+      },
+      "note": "Normal query - User lookup by ID"
+    },
+    {
+      "rank": 3,
+      "sqlId": "mno345pqr678",
+      "sqlText": "SELECT j.id, j.title, j.company_id, j.created_at FROM jobs j WHERE j.status = 'active' ORDER BY j.created_at DESC LIMIT 25",
+      "dbLoad": 0.8,
+      "dbLoadPercent": 4.3,
+      "avgLatency": 89,
+      "avgLatencyUnit": "ms",
+      "callsPerSecond": 45.2,
+      "rowsExamined": 25,
+      "rowsReturned": 25,
+      "waitEvents": {
+        "CPU": 88.5,
+        "IO:DataFileRead": 11.5
+      },
+      "note": "Normal query - Jobs listing"
+    },
+    {
+      "rank": 4,
+      "sqlId": "stu901vwx234",
+      "sqlText": "INSERT INTO user_activity_log (user_id, activity_type, metadata, created_at) VALUES ($1, $2, $3, NOW())",
+      "dbLoad": 0.6,
+      "dbLoadPercent": 3.2,
+      "avgLatency": 12,
+      "avgLatencyUnit": "ms",
+      "callsPerSecond": 156.7,
+      "rowsExamined": 0,
+      "rowsReturned": 0,
+      "waitEvents": {
+        "CPU": 45.2,
+        "IO:WALWrite": 54.8
+      },
+      "note": "Normal query - Activity logging"
+    }
+  ],
+  "waitEvents": {
+    "topWaits": [
+      {
+        "eventType": "CPU",
+        "eventName": "CPU",
+        "avgActiveSessionsWaiting": 15.1,
+        "percent": 80.7
+      },
+      {
+        "eventType": "IO",
+        "eventName": "IO:DataFileRead",
+        "avgActiveSessionsWaiting": 2.1,
+        "percent": 11.2
+      },
+      {
+        "eventType": "Lock",
+        "eventName": "LWLock:buffer_mapping",
+        "avgActiveSessionsWaiting": 0.8,
+        "percent": 4.3
+      },
+      {
+        "eventType": "IO",
+        "eventName": "IO:WALWrite",
+        "avgActiveSessionsWaiting": 0.5,
+        "percent": 2.7
+      },
+      {
+        "eventType": "Client",
+        "eventName": "Client:ClientRead",
+        "avgActiveSessionsWaiting": 0.2,
+        "percent": 1.1
+      }
+    ]
+  },
+  "recommendations": [
+    {
+      "severity": "CRITICAL",
+      "category": "Query Optimization",
+      "message": "Query abc123def456 is consuming 66% of database load. The CROSS JOIN pattern is creating a cartesian product. Consider rewriting the query to use proper JOIN conditions and avoid correlated subqueries."
+    },
+    {
+      "severity": "HIGH",
+      "category": "Connection Management",
+      "message": "Connection count approached limit (285/300). Consider implementing connection pooling at the application level (e.g., PgBouncer) or increasing max_connections."
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "Indexing",
+      "message": "Query abc123def456 is examining 8.9M rows to return 100 rows. Consider adding appropriate indexes on jobs.status, jobs.created_at, and user_job_matches composite columns."
+    }
+  ]
+}
+

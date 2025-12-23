@@ -1,0 +1,127 @@
+# WAF Sample Blocked Requests
+# Time Range: 2024-01-15T14:15:00Z to 2024-01-15T14:22:00Z
+# Rule: plooral-rate-limit-rule
+# Note: Showing sample of blocked requests from ap-southeast-1
+
+---
+Timestamp: 2024-01-15T14:16:23.456Z
+Action: BLOCK
+Rule: plooral-rate-limit-rule
+TerminatingRuleId: plooral-rate-limit-rule
+ClientIP: 103.252.114.45
+Country: SG
+URI: /v1/recommendations
+Method: GET
+Headers:
+  Host: api.plooral.com
+  User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1
+  Accept: application/json
+  Accept-Language: en-SG,en;q=0.9
+  X-Forwarded-For: 103.252.114.45
+  X-Request-ID: req_abc123def456
+  Authorization: Bearer eyJhbGciOiJSUzI1NiIs...
+RateBasedRuleDetails:
+  RateLimit: 2000
+  CurrentRate: 2456
+  EvaluationWindowSeconds: 300
+
+---
+Timestamp: 2024-01-15T14:16:45.789Z
+Action: BLOCK
+Rule: plooral-rate-limit-rule
+TerminatingRuleId: plooral-rate-limit-rule
+ClientIP: 103.252.114.67
+Country: SG
+URI: /v1/recommendations
+Method: GET
+Headers:
+  Host: api.plooral.com
+  User-Agent: Mozilla/5.0 (Linux; Android 14; SM-S918B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36
+  Accept: application/json
+  Accept-Language: en-SG,en;q=0.9
+  X-Forwarded-For: 103.252.114.67
+  X-Request-ID: req_def456ghi789
+  Authorization: Bearer eyJhbGciOiJSUzI1NiIs...
+RateBasedRuleDetails:
+  RateLimit: 2000
+  CurrentRate: 2890
+  EvaluationWindowSeconds: 300
+
+---
+Timestamp: 2024-01-15T14:17:12.012Z
+Action: BLOCK
+Rule: plooral-rate-limit-rule
+TerminatingRuleId: plooral-rate-limit-rule
+ClientIP: 103.252.114.89
+Country: SG
+URI: /v1/recommendations
+Method: GET
+Headers:
+  Host: api.plooral.com
+  User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+  Accept: application/json
+  Accept-Language: en-SG,en;q=0.9,zh-CN;q=0.8
+  X-Forwarded-For: 103.252.114.89
+  X-Request-ID: req_ghi789jkl012
+  Authorization: Bearer eyJhbGciOiJSUzI1NiIs...
+RateBasedRuleDetails:
+  RateLimit: 2000
+  CurrentRate: 3245
+  EvaluationWindowSeconds: 300
+
+---
+Timestamp: 2024-01-15T14:18:34.345Z
+Action: BLOCK
+Rule: plooral-rate-limit-rule
+TerminatingRuleId: plooral-rate-limit-rule
+ClientIP: 103.252.114.23
+Country: SG
+URI: /v1/recommendations
+Method: GET
+Headers:
+  Host: api.plooral.com
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0
+  Accept: application/json
+  Accept-Language: en-SG,en;q=0.9
+  X-Forwarded-For: 103.252.114.23
+  X-Request-ID: req_jkl012mno345
+  Authorization: Bearer eyJhbGciOiJSUzI1NiIs...
+RateBasedRuleDetails:
+  RateLimit: 2000
+  CurrentRate: 3567
+  EvaluationWindowSeconds: 300
+
+---
+Timestamp: 2024-01-15T14:19:56.678Z
+Action: BLOCK
+Rule: plooral-rate-limit-rule
+TerminatingRuleId: plooral-rate-limit-rule
+ClientIP: 103.252.114.34
+Country: SG
+URI: /v1/dashboard
+Method: GET
+Headers:
+  Host: api.plooral.com
+  User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1
+  Accept: application/json
+  Accept-Language: en-SG,en;q=0.9
+  X-Forwarded-For: 103.252.114.34
+  X-Request-ID: req_mno345pqr678
+  Authorization: Bearer eyJhbGciOiJSUzI1NiIs...
+RateBasedRuleDetails:
+  RateLimit: 2000
+  CurrentRate: 4012
+  EvaluationWindowSeconds: 300
+
+---
+# ANALYSIS NOTE:
+# These blocked requests appear to be legitimate users
+# All have valid JWT tokens
+# User agents are diverse (iOS, Android, Desktop)
+# The rate limit is being triggered because users are retrying
+# after receiving 5xx errors from the origin
+# 
+# Recommendation: This is a symptom, not the cause.
+# Users are retrying failed requests, triggering rate limits.
+# The root cause appears to be the origin latency issue.
+

@@ -1,0 +1,92 @@
+================================================================================
+DEPLOYMENT LOG: d-ABC123DEF4
+Application: plooral-api-deploy
+Deployment Group: plooral-api-prod-dg
+Deployment Config: CodeDeployDefault.ECSAllAtOnce
+Started: 2024-01-15T14:00:01Z
+================================================================================
+
+[2024-01-15T14:00:01Z] Deployment started
+[2024-01-15T14:00:01Z] Deployment ID: d-ABC123DEF4
+[2024-01-15T14:00:01Z] Deployment configuration: CodeDeployDefault.ECSAllAtOnce
+[2024-01-15T14:00:01Z] Target: arn:aws:ecs:us-east-1:123456789012:service/plooral-prod-cluster/plooral-api
+
+[2024-01-15T14:00:02Z] Retrieving task definition from artifact...
+[2024-01-15T14:00:02Z] Task definition file: taskdef.json
+[2024-01-15T14:00:02Z] AppSpec file: appspec.yaml
+
+[2024-01-15T14:00:03Z] WARNING: Task definition contains hardcoded image tag (v2.4.0)
+[2024-01-15T14:00:03Z] WARNING: Expected placeholder <IMAGE1_NAME> not found
+[2024-01-15T14:00:03Z] Proceeding with image from taskdef.json...
+
+[2024-01-15T14:00:05Z] Registering new task definition...
+[2024-01-15T14:00:06Z] New task definition: arn:aws:ecs:us-east-1:123456789012:task-definition/plooral-api:145
+
+[2024-01-15T14:00:07Z] Creating replacement task set...
+[2024-01-15T14:00:10Z] Task set created: arn:aws:ecs:us-east-1:123456789012:task-set/plooral-prod-cluster/plooral-api/ecs-svc/1234567890123456789
+
+[2024-01-15T14:00:15Z] Starting 1 replacement tasks...
+[2024-01-15T14:00:20Z] Task a1b2c3d4-5678-90ab-cdef-1234567890ab: PROVISIONING
+[2024-01-15T14:00:35Z] Task a1b2c3d4-5678-90ab-cdef-1234567890ab: PENDING
+[2024-01-15T14:00:50Z] Task a1b2c3d4-5678-90ab-cdef-1234567890ab: RUNNING
+
+[2024-01-15T14:01:00Z] Waiting for replacement task set to become healthy...
+[2024-01-15T14:01:00Z] Target group: arn:aws:elasticloadbalancing:us-east-1:123456789012:targetgroup/plooral-api-prod-tg/a1b2c3d4e5f6g7h8
+
+[2024-01-15T14:01:05Z] Registering targets with load balancer...
+[2024-01-15T14:01:10Z] Target 10.0.2.103:8080 - initial
+[2024-01-15T14:01:15Z] Target 10.0.2.103:8080 - healthy
+
+[2024-01-15T14:01:20Z] Starting traffic shifting...
+[2024-01-15T14:01:20Z] Shifting 100% of traffic to replacement task set (AllAtOnce)
+
+[2024-01-15T14:01:25Z] Draining original task set...
+[2024-01-15T14:01:30Z] Connection draining timeout: 30 seconds
+
+[2024-01-15T14:02:00Z] Terminating original task set...
+[2024-01-15T14:02:05Z] Original tasks stopped: 1
+
+[2024-01-15T14:02:10Z] Starting next replacement task...
+[2024-01-15T14:02:15Z] Task b2c3d4e5-6789-01bc-def0-2345678901bc: PROVISIONING
+[2024-01-15T14:02:30Z] Task b2c3d4e5-6789-01bc-def0-2345678901bc: PENDING
+[2024-01-15T14:02:45Z] Task b2c3d4e5-6789-01bc-def0-2345678901bc: RUNNING
+
+[2024-01-15T14:03:00Z] Registering targets...
+[2024-01-15T14:03:05Z] Target 10.0.2.101:8080 - initial
+[2024-01-15T14:03:10Z] Target 10.0.2.101:8080 - healthy
+
+[2024-01-15T14:03:15Z] Draining and terminating second original task...
+[2024-01-15T14:03:45Z] Original tasks stopped: 2
+
+[2024-01-15T14:04:00Z] Starting final replacement task...
+[2024-01-15T14:04:05Z] Task c3d4e5f6-7890-12cd-ef01-3456789012cd: PROVISIONING
+[2024-01-15T14:04:20Z] Task c3d4e5f6-7890-12cd-ef01-3456789012cd: PENDING
+[2024-01-15T14:04:35Z] Task c3d4e5f6-7890-12cd-ef01-3456789012cd: RUNNING
+
+[2024-01-15T14:04:50Z] Registering targets...
+[2024-01-15T14:04:55Z] Target 10.0.2.102:8080 - initial
+[2024-01-15T14:05:00Z] Target 10.0.2.102:8080 - healthy
+
+[2024-01-15T14:05:00Z] Deployment completed successfully
+[2024-01-15T14:05:00Z] Total deployment time: 4 minutes 59 seconds
+
+================================================================================
+DEPLOYMENT SUMMARY
+================================================================================
+Status: SUCCEEDED
+Duration: 4m 59s
+Tasks replaced: 3
+Rollback: Not triggered
+
+WARNINGS:
+- No lifecycle hooks were executed (none defined in appspec)
+- No smoke tests performed post-deployment
+- Task definition image tag was hardcoded (expected placeholder)
+- No manual approval was required
+
+NOTES:
+- Deployment used AllAtOnce strategy (risky for production)
+- No canary or blue/green deployment configured
+- Original tasks were terminated without validation
+================================================================================
+

@@ -1,0 +1,108 @@
+{
+  "pipeline": {
+    "name": "plooral-api-pipeline",
+    "roleArn": "arn:aws:iam::123456789012:role/plooral-codepipeline-role",
+    "artifactStore": {
+      "type": "S3",
+      "location": "plooral-pipeline-artifacts-us-east-1"
+    },
+    "stages": [
+      {
+        "name": "Source",
+        "actions": [
+          {
+            "name": "Source",
+            "actionTypeId": {
+              "category": "Source",
+              "owner": "AWS",
+              "provider": "CodeStarSourceConnection",
+              "version": "1"
+            },
+            "runOrder": 1,
+            "configuration": {
+              "ConnectionArn": "arn:aws:codestar-connections:us-east-1:123456789012:connection/a1b2c3d4-5678-90ab-cdef-1234567890ab",
+              "FullRepositoryId": "plooral/plooral-api",
+              "BranchName": "main",
+              "OutputArtifactFormat": "CODE_ZIP"
+            },
+            "outputArtifacts": [
+              {
+                "name": "SourceOutput"
+              }
+            ],
+            "inputArtifacts": []
+          }
+        ]
+      },
+      {
+        "name": "Build",
+        "actions": [
+          {
+            "name": "Build",
+            "actionTypeId": {
+              "category": "Build",
+              "owner": "AWS",
+              "provider": "CodeBuild",
+              "version": "1"
+            },
+            "runOrder": 1,
+            "configuration": {
+              "ProjectName": "plooral-api-build",
+              "PrimarySource": "SourceOutput"
+            },
+            "outputArtifacts": [
+              {
+                "name": "BuildOutput"
+              }
+            ],
+            "inputArtifacts": [
+              {
+                "name": "SourceOutput"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Deploy",
+        "actions": [
+          {
+            "name": "Deploy",
+            "actionTypeId": {
+              "category": "Deploy",
+              "owner": "AWS",
+              "provider": "CodeDeployToECS",
+              "version": "1"
+            },
+            "runOrder": 1,
+            "configuration": {
+              "ApplicationName": "plooral-api-deploy",
+              "DeploymentGroupName": "plooral-api-prod-dg",
+              "TaskDefinitionTemplateArtifact": "BuildOutput",
+              "TaskDefinitionTemplatePath": "taskdef.json",
+              "AppSpecTemplateArtifact": "BuildOutput",
+              "AppSpecTemplatePath": "appspec.yaml"
+            },
+            "outputArtifacts": [],
+            "inputArtifacts": [
+              {
+                "name": "BuildOutput"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "version": 3
+  },
+  "_comments": {
+    "issues": [
+      "ISSUE 1: No manual approval stage before production deployment",
+      "ISSUE 2: AppSpecTemplatePath says 'appspec.yaml' but file is 'appspec.yml'",
+      "ISSUE 3: No staging environment or test stage",
+      "ISSUE 4: No notification configuration for failures",
+      "ISSUE 5: Single deployment group for production (no blue/green preparation)"
+    ]
+  }
+}
+

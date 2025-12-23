@@ -1,0 +1,232 @@
+================================================================================
+PIPELINE EXECUTION HISTORY: plooral-api-pipeline
+Last 10 Executions
+================================================================================
+
+EXECUTION #147
+ID: a1b2c3d4-5678-90ab-cdef-1234567890ab
+Status: SUCCEEDED
+Started: 2024-01-15T13:45:00Z
+Ended: 2024-01-15T14:05:00Z
+Duration: 20 minutes
+Trigger: GitHub push to main (commit: abc1234)
+Commit Message: "Add user recommendations endpoint"
+Author: developer@plooral.com
+
+Stages:
+  Source:  SUCCEEDED (15 seconds)
+  Build:   SUCCEEDED (8 minutes 33 seconds)
+  Deploy:  SUCCEEDED (4 minutes 59 seconds)
+
+Notes:
+- This deployment caused the incident in Scenario 1
+- No manual approval was requested
+- Deployed directly to production
+
+--------------------------------------------------------------------------------
+
+EXECUTION #146
+ID: b2c3d4e5-6789-01bc-def0-2345678901bc
+Status: SUCCEEDED
+Started: 2024-01-14T10:30:00Z
+Ended: 2024-01-14T10:52:00Z
+Duration: 22 minutes
+Trigger: GitHub push to main (commit: def4567)
+Commit Message: "Fix pagination bug in jobs listing"
+Author: developer@plooral.com
+
+Stages:
+  Source:  SUCCEEDED (12 seconds)
+  Build:   SUCCEEDED (9 minutes 15 seconds)
+  Deploy:  SUCCEEDED (5 minutes 22 seconds)
+
+--------------------------------------------------------------------------------
+
+EXECUTION #145
+ID: c3d4e5f6-7890-12cd-ef01-3456789012cd
+Status: FAILED
+Started: 2024-01-13T16:45:00Z
+Ended: 2024-01-13T16:58:00Z
+Duration: 13 minutes
+Trigger: GitHub push to main (commit: ghi7890)
+Commit Message: "WIP: Experimental feature flag system"
+Author: developer@plooral.com
+
+Stages:
+  Source:  SUCCEEDED (10 seconds)
+  Build:   FAILED (12 minutes 45 seconds)
+  Deploy:  NOT_STARTED
+
+Failure Reason:
+  Stage: Build
+  Action: Build
+  Error: Build failed with exit code 1
+  Details: npm test failed - 3 unit tests failing
+
+Notes:
+- Broken code was pushed directly to main
+- No PR review required
+- Build caught the error (tests ran)
+
+--------------------------------------------------------------------------------
+
+EXECUTION #144
+ID: d4e5f6a7-8901-23de-f012-4567890123de
+Status: SUCCEEDED
+Started: 2024-01-12T14:20:00Z
+Ended: 2024-01-12T14:45:00Z
+Duration: 25 minutes
+Trigger: GitHub push to main (commit: jkl0123)
+Commit Message: "Update dependencies, fix security vulnerabilities"
+Author: developer@plooral.com
+
+Stages:
+  Source:  SUCCEEDED (14 seconds)
+  Build:   SUCCEEDED (11 minutes 30 seconds)
+  Deploy:  SUCCEEDED (5 minutes 10 seconds)
+
+--------------------------------------------------------------------------------
+
+EXECUTION #143
+ID: e5f6a7b8-9012-34ef-0123-5678901234ef
+Status: FAILED
+Started: 2024-01-11T09:15:00Z
+Ended: 2024-01-11T09:35:00Z
+Duration: 20 minutes
+Trigger: GitHub push to main (commit: mno3456)
+Commit Message: "Refactor database connection pooling"
+Author: developer@plooral.com
+
+Stages:
+  Source:  SUCCEEDED (11 seconds)
+  Build:   SUCCEEDED (8 minutes 45 seconds)
+  Deploy:  FAILED (10 minutes 15 seconds)
+
+Failure Reason:
+  Stage: Deploy
+  Action: Deploy
+  Error: ECS service failed to stabilize
+  Details: Tasks failed health checks repeatedly
+
+Notes:
+- Deployment was rolled back manually
+- Root cause: misconfigured health check endpoint
+- No automated rollback triggered
+
+--------------------------------------------------------------------------------
+
+EXECUTION #142
+ID: f6a7b8c9-0123-45f0-1234-6789012345f0
+Status: SUCCEEDED
+Started: 2024-01-10T11:00:00Z
+Ended: 2024-01-10T11:25:00Z
+Duration: 25 minutes
+Trigger: GitHub push to main (commit: pqr6789)
+Commit Message: "Add health check endpoint /health"
+Author: developer@plooral.com
+
+Stages:
+  Source:  SUCCEEDED (13 seconds)
+  Build:   SUCCEEDED (10 minutes 20 seconds)
+  Deploy:  SUCCEEDED (5 minutes 35 seconds)
+
+--------------------------------------------------------------------------------
+
+EXECUTION #141
+ID: a7b8c9d0-1234-56a1-2345-7890123456a1
+Status: SUCCEEDED
+Started: 2024-01-09T15:30:00Z
+Ended: 2024-01-09T15:55:00Z
+Duration: 25 minutes
+Trigger: GitHub push to main (commit: stu9012)
+Commit Message: "Optimize job search queries"
+Author: developer@plooral.com
+
+Stages:
+  Source:  SUCCEEDED (12 seconds)
+  Build:   SUCCEEDED (9 minutes 50 seconds)
+  Deploy:  SUCCEEDED (5 minutes 45 seconds)
+
+--------------------------------------------------------------------------------
+
+EXECUTION #140
+ID: b8c9d0e1-2345-67b2-3456-8901234567b2
+Status: FAILED
+Started: 2024-01-08T10:00:00Z
+Ended: 2024-01-08T10:05:00Z
+Duration: 5 minutes
+Trigger: GitHub push to main (commit: vwx2345)
+Commit Message: "Quick fix for login bug"
+Author: developer@plooral.com
+
+Stages:
+  Source:  SUCCEEDED (10 seconds)
+  Build:   FAILED (4 minutes 30 seconds)
+  Deploy:  NOT_STARTED
+
+Failure Reason:
+  Stage: Build
+  Action: Build
+  Error: Docker build failed
+  Details: COPY failed: file not found in build context
+
+Notes:
+- Developer forgot to commit a file
+- No pre-push hooks in place
+
+--------------------------------------------------------------------------------
+
+EXECUTION #139
+ID: c9d0e1f2-3456-78c3-4567-9012345678c3
+Status: SUCCEEDED
+Started: 2024-01-07T14:00:00Z
+Ended: 2024-01-07T14:28:00Z
+Duration: 28 minutes
+Trigger: GitHub push to main (commit: yza5678)
+Commit Message: "Release v2.4.0"
+Author: developer@plooral.com
+
+Stages:
+  Source:  SUCCEEDED (15 seconds)
+  Build:   SUCCEEDED (12 minutes 10 seconds)
+  Deploy:  SUCCEEDED (6 minutes 5 seconds)
+
+Notes:
+- Last stable release before v2.5.0
+
+--------------------------------------------------------------------------------
+
+EXECUTION #138
+ID: d0e1f2a3-4567-89d4-5678-0123456789d4
+Status: SUCCEEDED
+Started: 2024-01-05T16:45:00Z
+Ended: 2024-01-05T17:10:00Z
+Duration: 25 minutes
+Trigger: GitHub push to main (commit: bcd8901)
+Commit Message: "Add application tracking feature"
+Author: developer@plooral.com
+
+Stages:
+  Source:  SUCCEEDED (11 seconds)
+  Build:   SUCCEEDED (10 minutes 5 seconds)
+  Deploy:  SUCCEEDED (5 minutes 20 seconds)
+
+================================================================================
+SUMMARY
+================================================================================
+Total executions shown: 10
+Succeeded: 7 (70%)
+Failed: 3 (30%)
+
+Common failure patterns:
+1. Build failures due to test failures (not caught before push)
+2. Deploy failures due to health check issues
+3. Missing files in commits
+
+Missing safeguards:
+- No manual approval for production
+- No staging environment
+- No automated rollback
+- No smoke tests post-deployment
+================================================================================
+

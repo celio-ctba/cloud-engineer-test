@@ -1,0 +1,90 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ff9900', 'primaryTextColor': '#232f3e', 'primaryBorderColor': '#232f3e', 'lineColor': '#232f3e', 'secondaryColor': '#232f3e', 'tertiaryColor': '#fff'}}}%%
+
+flowchart TB
+    subgraph Internet
+        Users[("👥 Users")]
+    end
+
+    subgraph Edge["AWS Edge"]
+        CF["☁️ CloudFront<br/>CDN"]
+        WAF["🛡️ AWS WAF<br/>Web ACL"]
+    end
+
+    subgraph Compute["AWS Compute"]
+        ALB["⚖️ Application<br/>Load Balancer"]
+        
+        subgraph ECS["ECS Cluster"]
+            API1["📦 plooral-api<br/>Task 1"]
+            API2["📦 plooral-api<br/>Task 2"]
+            API3["📦 plooral-api<br/>Task 3"]
+        end
+        
+        Lambda["⚡ plooral-worker<br/>Lambda"]
+    end
+
+    subgraph Data["AWS Data"]
+        Aurora[("🗄️ plooral-aurora<br/>Aurora PostgreSQL")]
+    end
+
+    subgraph Messaging["AWS Messaging"]
+        EB["📨 EventBridge<br/>plooral-events"]
+        SNS["📢 SNS Topic<br/>plooral-notifications"]
+        SQS["📥 SQS Queue<br/>plooral-tasks"]
+        DLQ["💀 SQS DLQ<br/>plooral-tasks-dlq"]
+    end
+
+    subgraph Observability["AWS Observability"]
+        CW["📊 CloudWatch<br/>Metrics & Alarms"]
+        XRay["🔍 X-Ray<br/>Traces"]
+        SlackNotifier["⚡ Lambda<br/>plooral-slack-notifier"]
+    end
+
+    subgraph External["External Tools"]
+        Slack["💬 Slack<br/>#prod-alerts"]
+    end
+
+    subgraph CICD["AWS CI/CD"]
+        Pipeline["🔄 CodePipeline<br/>plooral-pipeline"]
+        Build["🔨 CodeBuild"]
+        Deploy["🚀 CodeDeploy"]
+    end
+
+    %% Traffic flow
+    Users --> CF
+    CF --> WAF
+    WAF --> ALB
+    ALB --> API1 & API2 & API3
+    API1 & API2 & API3 --> Aurora
+
+    %% Event flow
+    API1 & API2 & API3 --> EB
+    EB --> SNS
+    SNS --> SQS
+    SQS --> Lambda
+    SQS -.-> DLQ
+    Lambda --> Aurora
+
+    %% Observability
+    API1 & API2 & API3 -.-> CW
+    Lambda -.-> CW
+    Aurora -.-> CW
+    API1 & API2 & API3 -.-> XRay
+    Lambda -.-> XRay
+
+    %% CI/CD
+    Pipeline --> Build
+    Build --> Deploy
+    Deploy --> ECS
+
+    %% Alerting flow
+    CW --> SNS
+    SNS --> SlackNotifier
+    SlackNotifier --> Slack
+
+    classDef aws fill:#ff9900,stroke:#232f3e,color:#232f3e
+    classDef external fill:#4a154b,stroke:#232f3e,color:#fff
+    classDef edge fill:#8c4fff,stroke:#232f3e,color:#fff
+    classDef compute fill:#ed7100,stroke:#232f3e,color:#fff
+    classDef data fill:#3b48cc,stroke:#232f3e,color:#fff
+    classDef messaging fill:#e7157b,stroke:#232f3e,color:#fff
+

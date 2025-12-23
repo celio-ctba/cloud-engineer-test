@@ -1,0 +1,56 @@
+2024-01-15T10:00:00.000Z [plooral-aurora-prod] INFO Automated backup started
+2024-01-15T10:15:30.000Z [plooral-aurora-prod] INFO Automated backup completed successfully
+2024-01-15T10:15:30.001Z [plooral-aurora-prod] INFO Backup size: 45.2 GB, Duration: 15m 30s
+
+2024-01-15T11:00:00.000Z [plooral-aurora-prod-instance-1] INFO Performance Insights data collection completed
+2024-01-15T11:00:00.001Z [plooral-aurora-prod-instance-2] INFO Performance Insights data collection completed
+
+2024-01-15T12:30:00.000Z [plooral-aurora-prod-instance-1] WARN Connection count approaching limit: 245/300
+2024-01-15T12:30:00.001Z [plooral-aurora-prod-instance-1] INFO Active queries: 89, Waiting: 12
+
+2024-01-15T13:00:00.000Z [plooral-aurora-prod] INFO Parameter group change applied: plooral-aurora-pg15-params
+2024-01-15T13:00:00.001Z [plooral-aurora-prod] INFO max_connections: 300, shared_buffers: 8GB
+
+2024-01-15T14:05:00.000Z [plooral-aurora-prod-instance-1] WARN High CPU utilization detected: 72%
+2024-01-15T14:05:00.001Z [plooral-aurora-prod-instance-1] INFO Top query by CPU: SELECT ... FROM users CROSS JOIN jobs ... (pid: 12345)
+
+2024-01-15T14:10:00.000Z [plooral-aurora-prod-instance-1] ERROR Lock wait timeout exceeded for query on table 'users'
+2024-01-15T14:10:00.001Z [plooral-aurora-prod-instance-1] INFO Query cancelled: ALTER TABLE users ADD COLUMN test_col VARCHAR(255)
+2024-01-15T14:10:00.002Z [plooral-aurora-prod-instance-1] INFO Lock holder: pid 12345, query running for 5m 23s
+
+2024-01-15T14:12:00.000Z [plooral-aurora-prod-instance-1] WARN Connection count at limit: 298/300
+2024-01-15T14:12:00.001Z [plooral-aurora-prod-instance-1] WARN New connections being rejected
+
+2024-01-15T14:14:00.000Z [plooral-aurora-prod-instance-1] ERROR Connection pool exhausted
+2024-01-15T14:14:00.001Z [plooral-aurora-prod-instance-1] INFO Waiting connections: 45, Available: 0
+
+2024-01-15T14:15:00.000Z [plooral-aurora-prod-instance-1] WARN Read replica lag increasing: 2.5s
+2024-01-15T14:15:00.001Z [plooral-aurora-prod-instance-2] INFO Replica lag: 2.5s (normal: <100ms)
+
+2024-01-15T14:16:00.000Z [plooral-aurora-prod-instance-1] ERROR Query killed due to statement timeout (30s)
+2024-01-15T14:16:00.001Z [plooral-aurora-prod-instance-1] INFO Killed query: SELECT u.id, j.id, ... FROM users u CROSS JOIN jobs j ...
+
+2024-01-15T14:17:00.000Z [plooral-aurora-prod-instance-1] WARN Transaction log (WAL) generation rate high: 150 MB/min
+2024-01-15T14:17:00.001Z [plooral-aurora-prod-instance-1] INFO Normal rate: 20 MB/min
+
+2024-01-15T14:18:00.000Z [plooral-aurora-prod-instance-1] CRITICAL CPU utilization: 95%
+2024-01-15T14:18:00.001Z [plooral-aurora-prod-instance-1] INFO Load average: 12.5 (4 vCPUs)
+
+2024-01-15T14:18:30.000Z [plooral-aurora-prod-instance-1] WARN Memory pressure detected
+2024-01-15T14:18:30.001Z [plooral-aurora-prod-instance-1] INFO Freeable memory: 1.2 GB (was 8 GB 15 minutes ago)
+
+2024-01-15T14:19:00.000Z [plooral-aurora-prod-instance-1] INFO Query timeout configuration: statement_timeout=30000ms
+2024-01-15T14:19:00.001Z [plooral-aurora-prod-instance-1] INFO Queries killed due to timeout in last 5 min: 23
+
+2024-01-15T14:20:00.000Z [plooral-aurora-prod-instance-1] WARN Database entering degraded state
+2024-01-15T14:20:00.001Z [plooral-aurora-prod-instance-1] INFO Recommendation: Investigate long-running queries
+
+2024-01-15T14:25:00.000Z [plooral-aurora-prod-instance-1] INFO Query load reducing after application rollback
+2024-01-15T14:25:00.001Z [plooral-aurora-prod-instance-1] INFO Connection count: 145/300
+
+2024-01-15T14:30:00.000Z [plooral-aurora-prod-instance-1] INFO Database returning to normal operation
+2024-01-15T14:30:00.001Z [plooral-aurora-prod-instance-1] INFO CPU: 35%, Connections: 89/300, Replica lag: 50ms
+
+2024-01-15T15:00:00.000Z [plooral-aurora-prod] INFO Automated point-in-time recovery test passed
+2024-01-15T15:00:00.001Z [plooral-aurora-prod] INFO Recovery point: 2024-01-15T14:59:00Z
+

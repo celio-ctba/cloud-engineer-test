@@ -1,0 +1,153 @@
+{
+  "WebACL": {
+    "Name": "plooral-prod-waf",
+    "Id": "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+    "ARN": "arn:aws:wafv2:us-east-1:123456789012:global/webacl/plooral-prod-waf/a1b2c3d4-5678-90ab-cdef-1234567890ab",
+    "DefaultAction": {
+      "Allow": {}
+    },
+    "Description": "WAF rules for Plooral production environment",
+    "Rules": [
+      {
+        "Name": "AWS-AWSManagedRulesCommonRuleSet",
+        "Priority": 1,
+        "OverrideAction": {
+          "None": {}
+        },
+        "Statement": {
+          "ManagedRuleGroupStatement": {
+            "VendorName": "AWS",
+            "Name": "AWSManagedRulesCommonRuleSet"
+          }
+        },
+        "VisibilityConfig": {
+          "SampledRequestsEnabled": true,
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "AWSManagedRulesCommonRuleSetMetric"
+        }
+      },
+      {
+        "Name": "AWS-AWSManagedRulesKnownBadInputsRuleSet",
+        "Priority": 2,
+        "OverrideAction": {
+          "None": {}
+        },
+        "Statement": {
+          "ManagedRuleGroupStatement": {
+            "VendorName": "AWS",
+            "Name": "AWSManagedRulesKnownBadInputsRuleSet"
+          }
+        },
+        "VisibilityConfig": {
+          "SampledRequestsEnabled": true,
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "AWSManagedRulesKnownBadInputsRuleSetMetric"
+        }
+      },
+      {
+        "Name": "plooral-rate-limit-rule",
+        "Priority": 3,
+        "Action": {
+          "Block": {}
+        },
+        "Statement": {
+          "RateBasedStatement": {
+            "Limit": 2000,
+            "AggregateKeyType": "IP"
+          }
+        },
+        "VisibilityConfig": {
+          "SampledRequestsEnabled": true,
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "plooralRateLimitRuleMetric"
+        }
+      },
+      {
+        "Name": "plooral-geo-block-rule",
+        "Priority": 4,
+        "Action": {
+          "Block": {}
+        },
+        "Statement": {
+          "GeoMatchStatement": {
+            "CountryCodes": [
+              "CN",
+              "RU",
+              "KP",
+              "IR"
+            ]
+          }
+        },
+        "VisibilityConfig": {
+          "SampledRequestsEnabled": true,
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "plooralGeoBlockRuleMetric"
+        }
+      },
+      {
+        "Name": "plooral-sql-injection-rule",
+        "Priority": 5,
+        "Action": {
+          "Block": {}
+        },
+        "Statement": {
+          "SqliMatchStatement": {
+            "FieldToMatch": {
+              "AllQueryArguments": {}
+            },
+            "TextTransformations": [
+              {
+                "Priority": 0,
+                "Type": "URL_DECODE"
+              },
+              {
+                "Priority": 1,
+                "Type": "HTML_ENTITY_DECODE"
+              }
+            ]
+          }
+        },
+        "VisibilityConfig": {
+          "SampledRequestsEnabled": true,
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "plooralSqlInjectionRuleMetric"
+        }
+      },
+      {
+        "Name": "plooral-xss-rule",
+        "Priority": 6,
+        "Action": {
+          "Block": {}
+        },
+        "Statement": {
+          "XssMatchStatement": {
+            "FieldToMatch": {
+              "Body": {}
+            },
+            "TextTransformations": [
+              {
+                "Priority": 0,
+                "Type": "URL_DECODE"
+              },
+              {
+                "Priority": 1,
+                "Type": "HTML_ENTITY_DECODE"
+              }
+            ]
+          }
+        },
+        "VisibilityConfig": {
+          "SampledRequestsEnabled": true,
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "plooralXssRuleMetric"
+        }
+      }
+    ],
+    "VisibilityConfig": {
+      "SampledRequestsEnabled": true,
+      "CloudWatchMetricsEnabled": true,
+      "MetricName": "plooralProdWafMetric"
+    },
+    "Capacity": 350
+  }
+}

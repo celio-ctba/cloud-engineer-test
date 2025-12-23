@@ -1,0 +1,73 @@
+{
+  "family": "plooral-api",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::123456789012:role/plooral-ecs-execution-role",
+  "taskRoleArn": "arn:aws:iam::123456789012:role/plooral-ecs-task-role",
+  "containerDefinitions": [
+    {
+      "name": "plooral-api",
+      "image": "123456789012.dkr.ecr.us-east-1.amazonaws.com/plooral-api:v2.4.0",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {
+          "name": "NODE_ENV",
+          "value": "production"
+        },
+        {
+          "name": "PORT",
+          "value": "8080"
+        },
+        {
+          "name": "DATABASE_HOST",
+          "value": "plooral-aurora-prod.cluster-abc123.us-east-1.rds.amazonaws.com"
+        },
+        {
+          "name": "DATABASE_NAME",
+          "value": "plooral_prod"
+        },
+        {
+          "name": "DATABASE_USER",
+          "value": "plooral_api"
+        },
+        {
+          "name": "DATABASE_PASSWORD",
+          "value": "pr0d_p@ssw0rd_2024!"
+        },
+        {
+          "name": "JWT_SECRET",
+          "value": "super_secret_jwt_key_do_not_share"
+        },
+        {
+          "name": "LOG_LEVEL",
+          "value": "info"
+        }
+      ],
+      "secrets": [],
+      "healthCheck": {
+        "command": ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"],
+        "interval": 5,
+        "timeout": 2,
+        "retries": 2,
+        "startPeriod": 10
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/plooral-api",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "memoryReservation": 256
+    }
+  ]
+}

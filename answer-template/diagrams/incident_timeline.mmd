@@ -1,0 +1,33 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ff9900'}}}%%
+
+gantt
+    title Incident Timeline - P0 Latency Spike
+    dateFormat HH:mm
+    axisFormat %H:%M
+
+    section Deployment
+    Production deploy starts           :deploy, 14:00, 5m
+    Deploy completes                   :milestone, 14:05, 0m
+    
+    section Early Signals
+    Cache miss rate increases          :warning, 14:08, 7m
+    DB connection pool pressure        :warning, 14:10, 5m
+    
+    section Escalation
+    P99 latency crosses 2s threshold   :crit, alarm1, 14:15, 30m
+    5xx rate exceeds 1%                :crit, alarm2, 14:17, 28m
+    ECS task health check failures     :crit, alarm3, 14:18, 27m
+    SQS queue depth alarm              :crit, alarm4, 14:20, 25m
+    WAF block rate spike               :warning, 14:22, 23m
+    
+    section Response
+    On-call paged                      :milestone, oncall, 14:17, 0m
+    Initial triage begins              :active, triage, 14:20, 10m
+    Rollback decision made             :milestone, 14:30, 0m
+    Rollback initiated                 :active, rollback, 14:30, 5m
+    
+    section Recovery
+    Previous version deployed          :milestone, 14:35, 0m
+    Latency normalizing                :done, 14:35, 10m
+    Full recovery confirmed            :milestone, 14:45, 0m
+

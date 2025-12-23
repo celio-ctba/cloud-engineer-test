@@ -1,0 +1,70 @@
+{
+  "parameters": [
+    {
+      "Name": "/plooral/prod/db-password",
+      "Type": "SecureString",
+      "KeyId": "alias/aws/ssm",
+      "Value": "[REDACTED]",
+      "Description": "Production database password",
+      "LastModifiedDate": "2023-06-15T10:30:00Z",
+      "Version": 1
+    },
+    {
+      "Name": "/plooral/prod/jwt-secret",
+      "Type": "SecureString",
+      "KeyId": "alias/aws/ssm",
+      "Value": "[REDACTED]",
+      "Description": "JWT signing secret for API authentication",
+      "LastModifiedDate": "2023-06-15T10:30:00Z",
+      "Version": 1
+    },
+    {
+      "Name": "/plooral/prod/api-keys/stripe",
+      "Type": "String",
+      "Value": "EXAMPLE_STRIPE_KEY_NOT_REAL_12345",
+      "Description": "Stripe live API key",
+      "LastModifiedDate": "2023-08-20T14:15:00Z",
+      "Version": 2
+    },
+    {
+      "Name": "/plooral/prod/api-keys/sendgrid",
+      "Type": "String",
+      "Value": "EXAMPLE_SENDGRID_KEY_NOT_REAL_67890",
+      "Description": "SendGrid API key for email sending",
+      "LastModifiedDate": "2023-07-10T09:45:00Z",
+      "Version": 1
+    },
+    {
+      "Name": "/plooral/prod/config/feature-flags",
+      "Type": "String",
+      "Value": "{\"newRecommendations\":true,\"darkMode\":true,\"betaFeatures\":false}",
+      "Description": "Feature flag configuration",
+      "LastModifiedDate": "2024-01-14T16:00:00Z",
+      "Version": 15
+    },
+    {
+      "Name": "/plooral/prod/config/rate-limits",
+      "Type": "String",
+      "Value": "{\"apiRateLimit\":1000,\"searchRateLimit\":100,\"uploadRateLimit\":10}",
+      "Description": "Rate limiting configuration",
+      "LastModifiedDate": "2024-01-10T11:30:00Z",
+      "Version": 8
+    },
+    {
+      "Name": "/plooral/prod/db-connection-string",
+      "Type": "String",
+      "Value": "postgresql://plooral_api:FAKE_PASSWORD_FOR_TESTING@plooral-aurora-prod.cluster-abc123.us-east-1.rds.amazonaws.com:5432/plooral_prod",
+      "Description": "Database connection string",
+      "LastModifiedDate": "2023-06-15T10:35:00Z",
+      "Version": 1
+    },
+    {
+      "Name": "/plooral/dev/db-password",
+      "Type": "String",
+      "Value": "FAKE_DEV_PASSWORD",
+      "Description": "Development database password",
+      "LastModifiedDate": "2023-05-01T08:00:00Z",
+      "Version": 1
+    }
+  ]
+}

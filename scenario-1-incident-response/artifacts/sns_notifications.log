@@ -1,0 +1,111 @@
+2024-01-15T14:15:00.123Z INFO  TopicArn: arn:aws:sns:us-east-1:123456789012:plooral-notify-prod
+  MessageId: 1a2b3c4d-5e6f-7a8b-9c0d-ef1234567890
+  Subject: [ALARM] plooral-api-p99-latency
+  Message: {"AlarmName":"plooral-api-p99-latency","NewStateValue":"ALARM","NewStateReason":"Threshold Crossed: 1 datapoint (2045.0) was greater than or equal to the threshold (2000.0)."}
+  Status: SUCCESS
+  Endpoint: arn:aws:lambda:us-east-1:123456789012:function:plooral-slack-notifier
+  DeliveryAttempts: 1
+  SlackChannel: #prod-alerts
+  SlackMessageTs: 1705327500.123456
+
+2024-01-15T14:15:00.456Z INFO  TopicArn: arn:aws:sns:us-east-1:123456789012:plooral-notify-prod
+  MessageId: 2b3c4d5e-6f7a-8b9c-0d1e-f23456789012
+  Subject: [ALARM] plooral-api-p99-latency
+  Message: {"AlarmName":"plooral-api-p99-latency","NewStateValue":"ALARM","NewStateReason":"Threshold Crossed: 1 datapoint (2045.0) was greater than or equal to the threshold (2000.0)."}
+  Status: SUCCESS
+  Endpoint: oncall-devops@plooral.com
+  DeliveryAttempts: 1
+
+2024-01-15T14:17:00.789Z INFO  TopicArn: arn:aws:sns:us-east-1:123456789012:plooral-notify-prod
+  MessageId: 3c4d5e6f-7a8b-9c0d-1e2f-345678901234
+  Subject: [ALARM] plooral-api-5xx-rate
+  Message: {"AlarmName":"plooral-api-5xx-rate","NewStateValue":"ALARM","NewStateReason":"Threshold Crossed: 1 datapoint (1.2) was greater than or equal to the threshold (1.0)."}
+  Status: SUCCESS
+  Endpoint: arn:aws:lambda:us-east-1:123456789012:function:plooral-slack-notifier
+  DeliveryAttempts: 1
+  SlackChannel: #prod-alerts
+  SlackMessageTs: 1705327620.234567
+
+2024-01-15T14:17:00.012Z INFO  TopicArn: arn:aws:sns:us-east-1:123456789012:plooral-notify-prod
+  MessageId: 4d5e6f7a-8b9c-0d1e-2f3a-456789012345
+  Subject: [ALARM] plooral-api-5xx-rate
+  Message: {"AlarmName":"plooral-api-5xx-rate","NewStateValue":"ALARM","NewStateReason":"Threshold Crossed: 1 datapoint (1.2) was greater than or equal to the threshold (1.0)."}
+  Status: SUCCESS
+  Endpoint: oncall-devops@plooral.com
+  DeliveryAttempts: 1
+
+2024-01-15T14:18:00.345Z INFO  TopicArn: arn:aws:sns:us-east-1:123456789012:plooral-notify-prod
+  MessageId: 5e6f7a8b-9c0d-1e2f-3a4b-567890123456
+  Subject: [ALARM] plooral-api-unhealthy-hosts
+  Message: {"AlarmName":"plooral-api-unhealthy-hosts","NewStateValue":"ALARM","NewStateReason":"Threshold Crossed: 1 datapoint (1.0) was greater than or equal to the threshold (1.0)."}
+  Status: SUCCESS
+  Endpoint: arn:aws:lambda:us-east-1:123456789012:function:plooral-slack-notifier
+  DeliveryAttempts: 1
+  SlackChannel: #prod-alerts
+  SlackMessageTs: 1705327680.345678
+  SlackThreadTs: 1705327500.123456
+  Note: Threaded under initial P99 latency alarm
+
+2024-01-15T14:18:00.678Z INFO  TopicArn: arn:aws:sns:us-east-1:123456789012:plooral-notify-prod
+  MessageId: 6f7a8b9c-0d1e-2f3a-4b5c-678901234567
+  Subject: [ALARM] plooral-api-unhealthy-hosts
+  Message: {"AlarmName":"plooral-api-unhealthy-hosts","NewStateValue":"ALARM","NewStateReason":"Threshold Crossed: 1 datapoint (1.0) was greater than or equal to the threshold (1.0)."}
+  Status: SUCCESS
+  Endpoint: oncall-devops@plooral.com
+  DeliveryAttempts: 1
+
+2024-01-15T14:20:00.901Z INFO  TopicArn: arn:aws:sns:us-east-1:123456789012:plooral-notify-prod
+  MessageId: 7a8b9c0d-1e2f-3a4b-5c6d-789012345678
+  Subject: [ALARM] plooral-tasks-queue-depth
+  Message: {"AlarmName":"plooral-tasks-queue-depth","NewStateValue":"ALARM","NewStateReason":"Threshold Crossed: 1 datapoint (10234.0) was greater than or equal to the threshold (10000.0)."}
+  Status: SUCCESS
+  Endpoint: arn:aws:lambda:us-east-1:123456789012:function:plooral-slack-notifier
+  DeliveryAttempts: 1
+  SlackChannel: #prod-alerts
+  SlackMessageTs: 1705327800.456789
+  SlackThreadTs: 1705327500.123456
+  Note: Threaded under initial P99 latency alarm
+
+2024-01-15T14:20:00.234Z INFO  TopicArn: arn:aws:sns:us-east-1:123456789012:plooral-notify-prod
+  MessageId: 8b9c0d1e-2f3a-4b5c-6d7e-890123456789
+  Subject: [ALARM] plooral-tasks-queue-depth
+  Message: {"AlarmName":"plooral-tasks-queue-depth","NewStateValue":"ALARM","NewStateReason":"Threshold Crossed: 1 datapoint (10234.0) was greater than or equal to the threshold (10000.0)."}
+  Status: SUCCESS
+  Endpoint: oncall-devops@plooral.com
+  DeliveryAttempts: 1
+
+2024-01-15T14:22:00.567Z INFO  TopicArn: arn:aws:sns:us-east-1:123456789012:plooral-notify-prod
+  MessageId: 9c0d1e2f-3a4b-5c6d-7e8f-901234567890
+  Subject: [ALARM] plooral-waf-block-spike
+  Message: {"AlarmName":"plooral-waf-block-spike","NewStateValue":"ALARM","NewStateReason":"Threshold Crossed: 1 datapoint (345.0) was greater than or equal to the threshold (100.0)."}
+  Status: SUCCESS
+  Endpoint: arn:aws:lambda:us-east-1:123456789012:function:plooral-slack-notifier
+  DeliveryAttempts: 1
+  SlackChannel: #prod-alerts
+  SlackMessageTs: 1705327920.567890
+  SlackThreadTs: 1705327500.123456
+
+2024-01-15T14:22:00.890Z WARN  TopicArn: arn:aws:sns:us-east-1:123456789012:plooral-notify-prod
+  MessageId: 0d1e2f3a-4b5c-6d7e-8f9a-012345678901
+  Subject: [ALARM] plooral-waf-block-spike
+  Message: {"AlarmName":"plooral-waf-block-spike","NewStateValue":"ALARM","NewStateReason":"Threshold Crossed: 1 datapoint (345.0) was greater than or equal to the threshold (100.0)."}
+  Status: SUCCESS
+  Endpoint: oncall-devops@plooral.com
+  DeliveryAttempts: 1
+  Note: This alarm may indicate false positives. Review WAF logs before taking action.
+
+# ============================================================
+# SLACK NOTIFICATION FLOW
+# ============================================================
+# CloudWatch Alarm → SNS Topic (plooral-notify-prod)
+#                 ↓
+#     Lambda (plooral-slack-notifier) 
+#                 ↓
+#     Slack API → #prod-alerts channel
+#
+# The Lambda function:
+# - Formats CloudWatch alarm data into Slack blocks
+# - Threads related alarms together using SlackThreadTs
+# - Tags @oncall-devops group for P0/P1 alarms
+# - Includes CloudWatch console links in messages
+# ============================================================

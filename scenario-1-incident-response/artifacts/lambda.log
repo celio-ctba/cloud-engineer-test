@@ -1,0 +1,56 @@
+START RequestId: 1a2b3c4d-5e6f-7890-abcd-ef1234567890 Version: $LATEST
+2024-01-15T14:10:00.123Z	1a2b3c4d-5e6f-7890-abcd-ef1234567890	INFO	Processing message: {"type":"user.recommendation.generated","userId":"usr_12345","jobIds":["job_001","job_002","job_003"],"timestamp":"2024-01-15T14:09:59.999Z"}
+2024-01-15T14:10:00.456Z	1a2b3c4d-5e6f-7890-abcd-ef1234567890	INFO	Fetching user preferences for usr_12345
+2024-01-15T14:10:00.789Z	1a2b3c4d-5e6f-7890-abcd-ef1234567890	INFO	Sending notification to user usr_12345
+2024-01-15T14:10:01.012Z	1a2b3c4d-5e6f-7890-abcd-ef1234567890	INFO	Successfully processed recommendation event
+END RequestId: 1a2b3c4d-5e6f-7890-abcd-ef1234567890
+REPORT RequestId: 1a2b3c4d-5e6f-7890-abcd-ef1234567890	Duration: 889.12 ms	Billed Duration: 890 ms	Memory Size: 256 MB	Max Memory Used: 89 MB	Init Duration: 234.56 ms
+
+START RequestId: 2b3c4d5e-6f78-9012-bcde-f23456789012 Version: $LATEST
+2024-01-15T14:12:00.234Z	2b3c4d5e-6f78-9012-bcde-f23456789012	INFO	Processing message: {"type":"user.application.submitted","userId":"usr_67890","jobId":"job_456","timestamp":"2024-01-15T14:11:59.999Z"}
+2024-01-15T14:12:00.567Z	2b3c4d5e-6f78-9012-bcde-f23456789012	INFO	Updating application status in database
+2024-01-15T14:12:00.890Z	2b3c4d5e-6f78-9012-bcde-f23456789012	INFO	Successfully processed application event
+END RequestId: 2b3c4d5e-6f78-9012-bcde-f23456789012
+REPORT RequestId: 2b3c4d5e-6f78-9012-bcde-f23456789012	Duration: 656.78 ms	Billed Duration: 657 ms	Memory Size: 256 MB	Max Memory Used: 92 MB
+
+START RequestId: 3c4d5e6f-7890-1234-cdef-345678901234 Version: $LATEST
+2024-01-15T14:15:00.345Z	3c4d5e6f-7890-1234-cdef-345678901234	INFO	Processing message: {"type":"user.recommendation.generated","userId":"usr_11111","jobIds":["job_101","job_102"],"timestamp":"2024-01-15T14:14:59.999Z"}
+2024-01-15T14:15:00.678Z	3c4d5e6f-7890-1234-cdef-345678901234	INFO	Fetching user preferences for usr_11111
+2024-01-15T14:15:05.901Z	3c4d5e6f-7890-1234-cdef-345678901234	WARN	Database query timeout after 5000ms. Retrying...
+2024-01-15T14:15:10.234Z	3c4d5e6f-7890-1234-cdef-345678901234	ERROR	Database connection failed: ETIMEDOUT
+2024-01-15T14:15:10.567Z	3c4d5e6f-7890-1234-cdef-345678901234	ERROR	Failed to process message after 3 retries. Message will return to queue.
+END RequestId: 3c4d5e6f-7890-1234-cdef-345678901234
+REPORT RequestId: 3c4d5e6f-7890-1234-cdef-345678901234	Duration: 10222.89 ms	Billed Duration: 10223 ms	Memory Size: 256 MB	Max Memory Used: 95 MB
+
+START RequestId: 4d5e6f78-9012-3456-def0-456789012345 Version: $LATEST
+2024-01-15T14:16:00.456Z	4d5e6f78-9012-3456-def0-456789012345	INFO	Processing message: {"type":"job.posted","employerId":"emp_999","jobId":"job_789","timestamp":"2024-01-15T14:15:59.999Z"}
+2024-01-15T14:16:00.789Z	4d5e6f78-9012-3456-def0-456789012345	INFO	Indexing new job posting
+2024-01-15T14:16:05.012Z	4d5e6f78-9012-3456-def0-456789012345	WARN	Database query slow: 4500ms for job indexing
+2024-01-15T14:16:10.345Z	4d5e6f78-9012-3456-def0-456789012345	ERROR	Database connection pool exhausted. Active connections: 285/300
+2024-01-15T14:16:10.678Z	4d5e6f78-9012-3456-def0-456789012345	ERROR	Failed to process message: ConnectionPoolExhausted
+END RequestId: 4d5e6f78-9012-3456-def0-456789012345
+REPORT RequestId: 4d5e6f78-9012-3456-def0-456789012345	Duration: 10222.45 ms	Billed Duration: 10223 ms	Memory Size: 256 MB	Max Memory Used: 98 MB
+
+START RequestId: 5e6f7890-1234-5678-ef01-567890123456 Version: $LATEST
+2024-01-15T14:17:00.567Z	5e6f7890-1234-5678-ef01-567890123456	INFO	Processing message: {"type":"user.recommendation.generated","userId":"usr_22222","jobIds":["job_201"],"timestamp":"2024-01-15T14:16:59.999Z"}
+2024-01-15T14:17:00.890Z	5e6f7890-1234-5678-ef01-567890123456	INFO	Fetching user preferences for usr_22222
+2024-01-15T14:17:05.123Z	5e6f7890-1234-5678-ef01-567890123456	ERROR	Database connection failed: Connection refused
+2024-01-15T14:17:05.456Z	5e6f7890-1234-5678-ef01-567890123456	ERROR	All database connections in use. Pool size: 300, Active: 300
+END RequestId: 5e6f7890-1234-5678-ef01-567890123456
+REPORT RequestId: 5e6f7890-1234-5678-ef01-567890123456	Duration: 4889.23 ms	Billed Duration: 4890 ms	Memory Size: 256 MB	Max Memory Used: 94 MB
+
+START RequestId: 6f789012-3456-7890-f012-678901234567 Version: $LATEST
+2024-01-15T14:18:00.678Z	6f789012-3456-7890-f012-678901234567	INFO	Processing message: {"type":"user.application.viewed","userId":"usr_33333","applicationId":"app_555","timestamp":"2024-01-15T14:17:59.999Z"}
+2024-01-15T14:18:00.901Z	6f789012-3456-7890-f012-678901234567	WARN	Message processing delayed. Queue depth: 12500
+2024-01-15T14:18:05.234Z	6f789012-3456-7890-f012-678901234567	ERROR	Database query timeout. Query: SELECT * FROM user_preferences WHERE user_id = $1
+2024-01-15T14:18:10.567Z	6f789012-3456-7890-f012-678901234567	ERROR	Message processing failed. Sending to DLQ.
+END RequestId: 6f789012-3456-7890-f012-678901234567
+REPORT RequestId: 6f789012-3456-7890-f012-678901234567	Duration: 9889.45 ms	Billed Duration: 9890 ms	Memory Size: 256 MB	Max Memory Used: 96 MB
+
+START RequestId: 7890123a-4567-8901-0123-789012345678 Version: $LATEST
+2024-01-15T14:19:00.789Z	7890123a-4567-8901-0123-789012345678	INFO	Processing message: {"type":"user.recommendation.generated","userId":"usr_44444","jobIds":["job_301","job_302","job_303"],"timestamp":"2024-01-15T14:18:59.999Z"}
+2024-01-15T14:19:00.012Z	7890123a-4567-8901-0123-789012345678	ERROR	Unable to acquire database connection. Pool exhausted.
+2024-01-15T14:19:00.345Z	7890123a-4567-8901-0123-789012345678	ERROR	Message processing failed immediately. Sending to DLQ.
+END RequestId: 7890123a-4567-8901-0123-789012345678
+REPORT RequestId: 7890123a-4567-8901-0123-789012345678	Duration: 556.78 ms	Billed Duration: 557 ms	Memory Size: 256 MB	Max Memory Used: 91 MB
+

@@ -1,0 +1,139 @@
+{
+  "eventBusName": "plooral-events",
+  "rules": [
+    {
+      "Name": "plooral-user-events-rule",
+      "Arn": "arn:aws:events:us-east-1:123456789012:rule/plooral-events/plooral-user-events-rule",
+      "EventPattern": {
+        "source": ["plooral.api"],
+        "detail-type": [
+          "user.recommendation.generated",
+          "user.application.submitted",
+          "user.application.viewed",
+          "user.notification.send",
+          "user.profile.updated"
+        ]
+      },
+      "State": "ENABLED",
+      "Description": "Routes user-related events to the notification processing queue",
+      "Targets": [
+        {
+          "Id": "sns-plooral-notify",
+          "Arn": "arn:aws:sns:us-east-1:123456789012:plooral-notify-prod",
+          "InputTransformer": {
+            "InputPathsMap": {
+              "userId": "$.detail.userId",
+              "eventType": "$.detail-type",
+              "timestamp": "$.time"
+            },
+            "InputTemplate": "{\"type\": <eventType>, \"userId\": <userId>, \"timestamp\": <timestamp>, \"detail\": <aws.events.event.json>}"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "plooral-job-events-rule",
+      "Arn": "arn:aws:events:us-east-1:123456789012:rule/plooral-events/plooral-job-events-rule",
+      "EventPattern": {
+        "source": ["plooral.api"],
+        "detail-type": [
+          "job.posted",
+          "job.updated",
+          "job.closed",
+          "job.expired"
+        ]
+      },
+      "State": "ENABLED",
+      "Description": "Routes job-related events for indexing and notifications",
+      "Targets": [
+        {
+          "Id": "sns-plooral-notify",
+          "Arn": "arn:aws:sns:us-east-1:123456789012:plooral-notify-prod",
+          "RetryPolicy": {
+            "MaximumRetryAttempts": 3,
+            "MaximumEventAgeInSeconds": 3600
+          }
+        }
+      ]
+    },
+    {
+      "Name": "plooral-application-events-rule",
+      "Arn": "arn:aws:events:us-east-1:123456789012:rule/plooral-events/plooral-application-events-rule",
+      "EventPattern": {
+        "source": ["plooral.api"],
+        "detail-type": [
+          "application.submitted",
+          "application.reviewed",
+          "application.accepted",
+          "application.rejected"
+        ]
+      },
+      "State": "ENABLED",
+      "Description": "Routes application lifecycle events",
+      "Targets": [
+        {
+          "Id": "sns-plooral-notify",
+          "Arn": "arn:aws:sns:us-east-1:123456789012:plooral-notify-prod",
+          "RetryPolicy": {
+            "MaximumRetryAttempts": 5,
+            "MaximumEventAgeInSeconds": 86400
+          },
+          "DeadLetterConfig": {
+            "Arn": "arn:aws:sqs:us-east-1:123456789012:plooral-eventbridge-dlq"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "plooral-audit-events-rule",
+      "Arn": "arn:aws:events:us-east-1:123456789012:rule/plooral-events/plooral-audit-events-rule",
+      "EventPattern": {
+        "source": ["plooral.api", "plooral.admin"],
+        "detail-type": [
+          {
+            "prefix": "audit."
+          }
+        ]
+      },
+      "State": "ENABLED",
+      "Description": "Archives all audit events to S3",
+      "Targets": [
+        {
+          "Id": "firehose-audit-archive",
+          "Arn": "arn:aws:firehose:us-east-1:123456789012:deliverystream/plooral-audit-archive",
+          "RoleArn": "arn:aws:iam::123456789012:role/plooral-eventbridge-firehose-role"
+        }
+      ]
+    }
+  ],
+  "snsTopicConfiguration": {
+    "topicArn": "arn:aws:sns:us-east-1:123456789012:plooral-notify-prod",
+    "subscriptions": [
+      {
+        "Protocol": "sqs",
+        "Endpoint": "arn:aws:sqs:us-east-1:123456789012:plooral-tasks",
+        "RawMessageDelivery": true,
+        "FilterPolicy": null
+      },
+      {
+        "Protocol": "lambda",
+        "Endpoint": "arn:aws:lambda:us-east-1:123456789012:function:plooral-slack-notifier",
+        "FilterPolicy": {
+          "eventType": ["job.posted", "application.submitted"]
+        }
+      }
+    ]
+  },
+  "sqsQueueConfiguration": {
+    "queueUrl": "https://sqs.us-east-1.amazonaws.com/123456789012/plooral-tasks",
+    "attributes": {
+      "VisibilityTimeout": "30",
+      "MessageRetentionPeriod": "1209600",
+      "ReceiveMessageWaitTimeSeconds": "20",
+      "RedrivePolicy": {
+        "deadLetterTargetArn": "arn:aws:sqs:us-east-1:123456789012:plooral-tasks-dlq",
+        "maxReceiveCount": 3
+      }
+    }
+  }
+}

@@ -1,0 +1,195 @@
+# Time: 2024-01-15T14:08:23.456789Z
+# User@Host: plooral_api[plooral_api] @ 10.0.2.101 [10.0.2.101]
+# Query_time: 0.234567  Lock_time: 0.000123 Rows_sent: 1  Rows_examined: 45
+SELECT id, email, first_name, last_name FROM users WHERE id = 'usr_12345';
+
+# Time: 2024-01-15T14:10:45.678901Z
+# User@Host: plooral_api[plooral_api] @ 10.0.2.103 [10.0.2.103]
+# Query_time: 2.345678  Lock_time: 0.000234 Rows_sent: 50  Rows_examined: 2456789
+SELECT 
+    j.id, j.title, j.description, j.salary_min, j.salary_max,
+    j.location, j.remote_type, j.created_at,
+    c.name as company_name, c.logo_url,
+    COUNT(a.id) as application_count,
+    AVG(m.score) as match_score
+FROM jobs j
+LEFT JOIN companies c ON j.company_id = c.id
+LEFT JOIN applications a ON j.id = a.job_id
+LEFT JOIN user_job_matches m ON j.id = m.job_id AND m.user_id = 'usr_67890'
+WHERE j.status = 'active'
+    AND j.created_at > NOW() - INTERVAL '30 days'
+    AND (j.location = 'New York' OR j.remote_type = 'full')
+GROUP BY j.id, c.id
+ORDER BY match_score DESC NULLS LAST, j.created_at DESC
+LIMIT 50;
+
+# Time: 2024-01-15T14:12:12.345678Z
+# User@Host: plooral_api[plooral_api] @ 10.0.2.101 [10.0.2.101]
+# Query_time: 0.089012  Lock_time: 0.000089 Rows_sent: 25  Rows_examined: 234
+SELECT id, title, company_id FROM jobs WHERE status = 'active' ORDER BY created_at DESC LIMIT 25;
+
+# Time: 2024-01-15T14:14:34.567890Z
+# User@Host: plooral_api[plooral_api] @ 10.0.2.103 [10.0.2.103]
+# Query_time: 4.567890  Lock_time: 0.000345 Rows_sent: 50  Rows_examined: 3456789
+SELECT 
+    j.id, j.title, j.description, j.salary_min, j.salary_max,
+    j.location, j.remote_type, j.created_at,
+    c.name as company_name, c.logo_url,
+    COUNT(a.id) as application_count,
+    AVG(m.score) as match_score,
+    array_agg(DISTINCT s.name) as required_skills
+FROM jobs j
+LEFT JOIN companies c ON j.company_id = c.id
+LEFT JOIN applications a ON j.id = a.job_id
+LEFT JOIN user_job_matches m ON j.id = m.job_id AND m.user_id = 'usr_11111'
+LEFT JOIN job_skills js ON j.id = js.job_id
+LEFT JOIN skills s ON js.skill_id = s.id
+WHERE j.status = 'active'
+    AND j.created_at > NOW() - INTERVAL '30 days'
+    AND (j.location ILIKE '%san francisco%' OR j.remote_type IN ('full', 'hybrid'))
+    AND j.salary_min >= 100000
+GROUP BY j.id, c.id
+ORDER BY match_score DESC NULLS LAST, j.created_at DESC
+LIMIT 50;
+
+# Time: 2024-01-15T14:15:01.234567Z
+# User@Host: plooral_api[plooral_api] @ 10.0.2.103 [10.0.2.103]
+# Query_time: 8.901234  Lock_time: 45.234567 Rows_sent: 0  Rows_examined: 5678901
+-- NEW QUERY IN v2.5.0 - User Recommendations
+SELECT 
+    u.id as user_id,
+    j.id as job_id,
+    j.title,
+    c.name as company_name,
+    COALESCE(m.score, 0) as base_score,
+    (
+        SELECT COUNT(*) 
+        FROM user_skills us 
+        JOIN job_skills js ON us.skill_id = js.skill_id 
+        WHERE us.user_id = u.id AND js.job_id = j.id
+    ) as skill_match_count,
+    (
+        SELECT AVG(rating) 
+        FROM company_reviews cr 
+        WHERE cr.company_id = c.id
+    ) as company_rating,
+    CASE 
+        WHEN u.preferred_location = j.location THEN 1.0
+        WHEN j.remote_type = 'full' THEN 0.9
+        WHEN j.remote_type = 'hybrid' THEN 0.7
+        ELSE 0.5
+    END as location_score
+FROM users u
+CROSS JOIN jobs j
+JOIN companies c ON j.company_id = c.id
+LEFT JOIN user_job_matches m ON u.id = m.user_id AND j.id = m.job_id
+WHERE u.id = 'usr_12345'
+    AND j.status = 'active'
+    AND j.created_at > NOW() - INTERVAL '90 days'
+    AND NOT EXISTS (
+        SELECT 1 FROM applications a 
+        WHERE a.user_id = u.id AND a.job_id = j.id
+    )
+    AND NOT EXISTS (
+        SELECT 1 FROM user_dismissed_jobs udj 
+        WHERE udj.user_id = u.id AND udj.job_id = j.id
+    )
+ORDER BY 
+    skill_match_count DESC,
+    base_score DESC,
+    company_rating DESC NULLS LAST,
+    location_score DESC
+LIMIT 100;
+
+# Time: 2024-01-15T14:16:15.678901Z
+# User@Host: plooral_api[plooral_api] @ 10.0.2.103 [10.0.2.103]
+# Query_time: 12.345678  Lock_time: 78.901234 Rows_sent: 0  Rows_examined: 8901234
+-- NEW QUERY IN v2.5.0 - User Recommendations (same pattern, different user)
+SELECT 
+    u.id as user_id,
+    j.id as job_id,
+    j.title,
+    c.name as company_name,
+    COALESCE(m.score, 0) as base_score,
+    (
+        SELECT COUNT(*) 
+        FROM user_skills us 
+        JOIN job_skills js ON us.skill_id = js.skill_id 
+        WHERE us.user_id = u.id AND js.job_id = j.id
+    ) as skill_match_count,
+    (
+        SELECT AVG(rating) 
+        FROM company_reviews cr 
+        WHERE cr.company_id = c.id
+    ) as company_rating,
+    CASE 
+        WHEN u.preferred_location = j.location THEN 1.0
+        WHEN j.remote_type = 'full' THEN 0.9
+        WHEN j.remote_type = 'hybrid' THEN 0.7
+        ELSE 0.5
+    END as location_score
+FROM users u
+CROSS JOIN jobs j
+JOIN companies c ON j.company_id = c.id
+LEFT JOIN user_job_matches m ON u.id = m.user_id AND j.id = m.job_id
+WHERE u.id = 'usr_67890'
+    AND j.status = 'active'
+    AND j.created_at > NOW() - INTERVAL '90 days'
+    AND NOT EXISTS (
+        SELECT 1 FROM applications a 
+        WHERE a.user_id = u.id AND a.job_id = j.id
+    )
+    AND NOT EXISTS (
+        SELECT 1 FROM user_dismissed_jobs udj 
+        WHERE udj.user_id = u.id AND udj.job_id = j.id
+    )
+ORDER BY 
+    skill_match_count DESC,
+    base_score DESC,
+    company_rating DESC NULLS LAST,
+    location_score DESC
+LIMIT 100;
+
+# Time: 2024-01-15T14:17:30.901234Z
+# User@Host: plooral_api[plooral_api] @ 10.0.2.101 [10.0.2.101]
+# Query_time: 0.045678  Lock_time: 0.000045 Rows_sent: 1  Rows_examined: 1
+SELECT id, status FROM applications WHERE id = 'app_123456';
+
+# Time: 2024-01-15T14:18:00.234567Z
+# User@Host: plooral_api[plooral_api] @ 10.0.2.102 [10.0.2.102]
+# Query_time: 15.678901  Lock_time: 120.456789 Rows_sent: 0  Rows_examined: 12345678
+-- NEW QUERY IN v2.5.0 - User Recommendations (causing lock contention)
+SELECT 
+    u.id as user_id,
+    j.id as job_id,
+    j.title,
+    c.name as company_name,
+    COALESCE(m.score, 0) as base_score,
+    (
+        SELECT COUNT(*) 
+        FROM user_skills us 
+        JOIN job_skills js ON us.skill_id = js.skill_id 
+        WHERE us.user_id = u.id AND js.job_id = j.id
+    ) as skill_match_count,
+    (
+        SELECT AVG(rating) 
+        FROM company_reviews cr 
+        WHERE cr.company_id = c.id
+    ) as company_rating
+FROM users u
+CROSS JOIN jobs j
+JOIN companies c ON j.company_id = c.id
+LEFT JOIN user_job_matches m ON u.id = m.user_id AND j.id = m.job_id
+WHERE u.id = 'usr_99999'
+    AND j.status = 'active'
+    AND j.created_at > NOW() - INTERVAL '90 days'
+ORDER BY skill_match_count DESC, base_score DESC
+LIMIT 100;
+
+# Time: 2024-01-15T14:19:15.567890Z
+# User@Host: plooral_api[plooral_api] @ 10.0.2.103 [10.0.2.103]
+# Query_time: 18.234567  Lock_time: 145.678901 Rows_sent: 0  Rows_examined: 15678901
+-- Connection timeout - query killed
+-- NEW QUERY IN v2.5.0 - User Recommendations
+ERROR 2013 (HY000): Lost connection to MySQL server during query
+

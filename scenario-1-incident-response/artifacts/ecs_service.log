@@ -1,0 +1,34 @@
+2024-01-15T13:58:00.000Z	INFO	service plooral-api has reached a steady state.
+2024-01-15T14:00:01.234Z	INFO	service plooral-api has started 1 tasks: task plooral-api/a1b2c3d4e5f6.
+2024-01-15T14:00:01.234Z	INFO	service plooral-api deployment ecs-svc/1234567890123456789 started.
+2024-01-15T14:00:15.456Z	INFO	service plooral-api registered 1 targets in target-group plooral-api-prod-tg.
+2024-01-15T14:01:00.789Z	INFO	service plooral-api has begun draining connections on 1 tasks.
+2024-01-15T14:01:30.012Z	INFO	service plooral-api deregistered 1 targets in target-group plooral-api-prod-tg.
+2024-01-15T14:01:45.345Z	INFO	service plooral-api has stopped 1 tasks: task plooral-api/f6e5d4c3b2a1.
+2024-01-15T14:02:00.678Z	INFO	service plooral-api has started 1 tasks: task plooral-api/b2c3d4e5f6a1.
+2024-01-15T14:02:15.901Z	INFO	service plooral-api registered 1 targets in target-group plooral-api-prod-tg.
+2024-01-15T14:03:00.234Z	INFO	service plooral-api has begun draining connections on 1 tasks.
+2024-01-15T14:03:30.567Z	INFO	service plooral-api deregistered 1 targets in target-group plooral-api-prod-tg.
+2024-01-15T14:03:45.890Z	INFO	service plooral-api has stopped 1 tasks: task plooral-api/c3d4e5f6a1b2.
+2024-01-15T14:04:00.123Z	INFO	service plooral-api has started 1 tasks: task plooral-api/d4e5f6a1b2c3.
+2024-01-15T14:04:15.456Z	INFO	service plooral-api registered 1 targets in target-group plooral-api-prod-tg.
+2024-01-15T14:05:00.789Z	INFO	service plooral-api deployment ecs-svc/1234567890123456789 completed.
+2024-01-15T14:05:00.790Z	INFO	service plooral-api has reached a steady state.
+2024-01-15T14:14:30.123Z	WARN	service plooral-api (instance i-0a1b2c3d4e5f6g7h8) (port 8080) is unhealthy in target-group plooral-api-prod-tg due to (reason Health checks failed).
+2024-01-15T14:15:00.456Z	WARN	service plooral-api (instance i-0a1b2c3d4e5f6g7h8) (port 8080) is unhealthy in target-group plooral-api-prod-tg due to (reason Health checks failed with these codes: [504]).
+2024-01-15T14:15:30.789Z	ERROR	service plooral-api task d4e5f6a1b2c3 failed health checks. Stopping task.
+2024-01-15T14:15:45.012Z	INFO	service plooral-api has started 1 tasks: task plooral-api/e5f6a1b2c3d4.
+2024-01-15T14:16:00.345Z	INFO	service plooral-api registered 1 targets in target-group plooral-api-prod-tg.
+2024-01-15T14:16:45.678Z	WARN	service plooral-api (instance i-0b2c3d4e5f6g7h8i) (port 8080) is unhealthy in target-group plooral-api-prod-tg due to (reason Health checks failed with these codes: [504]).
+2024-01-15T14:17:00.901Z	ERROR	service plooral-api task e5f6a1b2c3d4 failed container health check. Task is stopping.
+2024-01-15T14:17:15.234Z	INFO	service plooral-api has started 1 tasks: task plooral-api/f6a1b2c3d4e5.
+2024-01-15T14:17:30.567Z	WARN	service plooral-api task f6a1b2c3d4e5 failed to start: ResourceInitializationError: unable to pull secrets or registry auth.
+2024-01-15T14:17:45.890Z	INFO	service plooral-api has started 1 tasks: task plooral-api/a1b2c3d4e5f6 (retry 1).
+2024-01-15T14:18:00.123Z	INFO	service plooral-api registered 1 targets in target-group plooral-api-prod-tg.
+2024-01-15T14:18:30.456Z	WARN	service plooral-api (instance i-0c3d4e5f6g7h8i9j) (port 8080) is unhealthy in target-group plooral-api-prod-tg due to (reason Health checks failed with these codes: [504]).
+2024-01-15T14:18:45.789Z	ERROR	service plooral-api task a1b2c3d4e5f6 container plooral-api exited with code 137 (SIGKILL - OOMKilled).
+2024-01-15T14:19:00.012Z	ERROR	service plooral-api (deployment ecs-svc/1234567890123456789) has failed to stabilize. The service has 3 running tasks, but 0 healthy tasks.
+2024-01-15T14:19:15.345Z	WARN	service plooral-api is unable to consistently start tasks successfully. Check your task definition and container image.
+2024-01-15T14:19:30.678Z	INFO	service plooral-api has started 1 tasks: task plooral-api/b2c3d4e5f6a1 (retry 2).
+2024-01-15T14:20:00.901Z	WARN	service plooral-api has entered an unstable state. Consider rolling back to a previous deployment.
+

@@ -1,0 +1,42 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Temporary files
+*.tmp
+*.temp
+*.log.bak
+
+# Node (if using any tooling)
+node_modules/
+
+# Python (if using any tooling)
+__pycache__/
+*.pyc
+.env
+.venv/
+venv/
+
+# Terraform state (should not exist per requirements, but just in case)
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# AWS credentials (never commit these)
+*.pem
+*.key
+credentials
+aws-credentials*
+
+# Work-in-progress (optional)
+*.draft
+*.wip

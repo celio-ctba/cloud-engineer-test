@@ -1,0 +1,122 @@
+[Container] 2024/01/15 13:45:00 Waiting for agent ping
+[Container] 2024/01/15 13:45:01 Waiting for DOWNLOAD_SOURCE
+[Container] 2024/01/15 13:45:05 Phase is DOWNLOAD_SOURCE
+[Container] 2024/01/15 13:45:05 CODEBUILD_SRC_DIR=/codebuild/output/src123456789/src
+[Container] 2024/01/15 13:45:05 YAML location is /codebuild/output/src123456789/src/buildspec.yml
+[Container] 2024/01/15 13:45:10 Phase complete: DOWNLOAD_SOURCE State: SUCCEEDED
+[Container] 2024/01/15 13:45:10 Phase context status code:  Message: 
+
+[Container] 2024/01/15 13:45:10 Entering phase INSTALL
+[Container] 2024/01/15 13:45:10 Phase complete: INSTALL State: SUCCEEDED
+[Container] 2024/01/15 13:45:10 Phase context status code:  Message: 
+
+[Container] 2024/01/15 13:45:10 Entering phase PRE_BUILD
+[Container] 2024/01/15 13:45:10 Running command echo Logging in to Amazon ECR...
+Logging in to Amazon ECR...
+
+[Container] 2024/01/15 13:45:11 Running command aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+Login Succeeded
+
+[Container] 2024/01/15 13:45:12 Running command REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME
+
+[Container] 2024/01/15 13:45:12 Running command COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+
+[Container] 2024/01/15 13:45:12 Running command IMAGE_TAG=${COMMIT_HASH:=latest}
+
+[Container] 2024/01/15 13:45:12 Running command echo "Building with DATABASE_PASSWORD=$DATABASE_PASSWORD"
+Building with DATABASE_PASSWORD=FAKE_PASSWORD_FOR_TESTING
+
+[Container] 2024/01/15 13:45:12 Running command echo "Repository URI is $REPOSITORY_URI"
+Repository URI is 123456789012.dkr.ecr.us-east-1.amazonaws.com/plooral-api
+
+[Container] 2024/01/15 13:45:12 Phase complete: PRE_BUILD State: SUCCEEDED
+[Container] 2024/01/15 13:45:12 Phase context status code:  Message: 
+
+[Container] 2024/01/15 13:45:12 Entering phase BUILD
+[Container] 2024/01/15 13:45:12 Running command echo Build started on `date`
+Build started on Mon Jan 15 13:45:12 UTC 2024
+
+[Container] 2024/01/15 13:45:12 Running command echo Building the Docker image...
+Building the Docker image...
+
+[Container] 2024/01/15 13:45:12 Running command docker build -t $REPOSITORY_URI:latest .
+Sending build context to Docker daemon  45.23MB
+Step 1/12 : FROM node:20-alpine
+20-alpine: Pulling from library/node
+Digest: sha256:abc123...
+Status: Downloaded newer image for node:20-alpine
+ ---> a1b2c3d4e5f6
+Step 2/12 : WORKDIR /app
+ ---> Running in abc123def456
+ ---> g7h8i9j0k1l2
+Step 3/12 : COPY package*.json ./
+ ---> m3n4o5p6q7r8
+Step 4/12 : RUN npm ci --only=production
+ ---> Running in s9t0u1v2w3x4
+npm WARN deprecated some-package@1.2.3: this package has been deprecated
+added 1234 packages in 45.678s
+ ---> y5z6a7b8c9d0
+Step 5/12 : COPY . .
+ ---> e1f2g3h4i5j6
+Step 6/12 : RUN npm run build
+ ---> Running in k7l8m9n0o1p2
+> plooral-api@2.5.0 build
+> tsc && npm run build:assets
+ ---> q3r4s5t6u7v8
+Step 7/12 : EXPOSE 8080
+ ---> w9x0y1z2a3b4
+Step 8/12 : USER node
+ ---> c5d6e7f8g9h0
+Step 9/12 : CMD ["node", "dist/server.js"]
+ ---> i1j2k3l4m5n6
+Successfully built i1j2k3l4m5n6
+Successfully tagged 123456789012.dkr.ecr.us-east-1.amazonaws.com/plooral-api:latest
+
+[Container] 2024/01/15 13:52:45 Running command docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+
+[Container] 2024/01/15 13:52:45 Phase complete: BUILD State: SUCCEEDED
+[Container] 2024/01/15 13:52:45 Phase context status code:  Message: 
+
+[Container] 2024/01/15 13:52:45 Entering phase POST_BUILD
+[Container] 2024/01/15 13:52:45 Running command echo Build completed on `date`
+Build completed on Mon Jan 15 13:52:45 UTC 2024
+
+[Container] 2024/01/15 13:52:45 Running command echo Pushing the Docker image...
+Pushing the Docker image...
+
+[Container] 2024/01/15 13:52:45 Running command docker push $REPOSITORY_URI:latest
+The push refers to repository [123456789012.dkr.ecr.us-east-1.amazonaws.com/plooral-api]
+a1b2c3d4: Pushed
+e5f6g7h8: Pushed
+i9j0k1l2: Pushed
+latest: digest: sha256:abc123def456... size: 2345
+
+[Container] 2024/01/15 13:53:30 Running command docker push $REPOSITORY_URI:$IMAGE_TAG
+The push refers to repository [123456789012.dkr.ecr.us-east-1.amazonaws.com/plooral-api]
+a1b2c3d4: Layer already exists
+e5f6g7h8: Layer already exists
+i9j0k1l2: Layer already exists
+abc1234: digest: sha256:abc123def456... size: 2345
+
+[Container] 2024/01/15 13:53:45 Running command printf '{"ImageURI":"%s"}' $REPOSITORY_URI:$IMAGE_TAG > imageDetail.json
+
+[Container] 2024/01/15 13:53:45 Running command cat taskdef.json
+{
+  "family": "plooral-api",
+  "networkMode": "awsvpc",
+  ...
+}
+
+[Container] 2024/01/15 13:53:45 Running command cp appspec.yml appspec.yaml
+
+[Container] 2024/01/15 13:53:45 Phase complete: POST_BUILD State: SUCCEEDED
+[Container] 2024/01/15 13:53:45 Phase context status code:  Message: 
+
+[Container] 2024/01/15 13:53:45 Entering phase UPLOAD_ARTIFACTS
+[Container] 2024/01/15 13:53:46 Uploading artifact...
+[Container] 2024/01/15 13:53:48 Phase complete: UPLOAD_ARTIFACTS State: SUCCEEDED
+[Container] 2024/01/15 13:53:48 Phase context status code:  Message: 
+
+[Container] 2024/01/15 13:53:48 Build complete. Exiting...
+

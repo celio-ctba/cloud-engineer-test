@@ -1,0 +1,194 @@
+{
+  "queueUrl": "https://sqs.us-east-1.amazonaws.com/123456789012/plooral-tasks-dlq",
+  "approximateNumberOfMessages": 234,
+  "sampleMessages": [
+    {
+      "messageId": "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+      "receiptHandle": "AQEBwJnKyrH...",
+      "body": {
+        "type": "user.recommendation.generated",
+        "userId": "usr_12345",
+        "jobIds": ["job_001", "job_002", "job_003"],
+        "timestamp": "2024-01-15T14:14:59.999Z",
+        "correlationId": "corr_abc123"
+      },
+      "attributes": {
+        "ApproximateReceiveCount": "4",
+        "SentTimestamp": "1705327499999",
+        "SenderId": "AROAEXAMPLEID:plooral-api-task",
+        "ApproximateFirstReceiveTimestamp": "1705327500123"
+      },
+      "messageAttributes": {
+        "eventSource": {
+          "stringValue": "plooral-api",
+          "dataType": "String"
+        },
+        "eventVersion": {
+          "stringValue": "1.0",
+          "dataType": "String"
+        }
+      },
+      "failureReason": "Database connection timeout after 5000ms",
+      "lastError": "ETIMEDOUT: Connection refused to plooral-aurora-prod.cluster-abc123.us-east-1.rds.amazonaws.com:5432",
+      "note": "SAFE TO RETRY - Transient database connection failure during incident"
+    },
+    {
+      "messageId": "b2c3d4e5-6789-01bc-def0-2345678901bc",
+      "receiptHandle": "AQEBwJnKyrI...",
+      "body": {
+        "type": "user.application.submitted",
+        "userId": "usr_67890",
+        "jobId": "job_456",
+        "applicationId": "app_789",
+        "timestamp": "2024-01-15T14:16:30.000Z",
+        "correlationId": "corr_def456"
+      },
+      "attributes": {
+        "ApproximateReceiveCount": "4",
+        "SentTimestamp": "1705327590000",
+        "SenderId": "AROAEXAMPLEID:plooral-api-task",
+        "ApproximateFirstReceiveTimestamp": "1705327590123"
+      },
+      "messageAttributes": {
+        "eventSource": {
+          "stringValue": "plooral-api",
+          "dataType": "String"
+        }
+      },
+      "failureReason": "Connection pool exhausted",
+      "lastError": "ConnectionPoolExhausted: Active connections: 300/300",
+      "note": "SAFE TO RETRY - Connection pool exhausted during incident"
+    },
+    {
+      "messageId": "c3d4e5f6-7890-12cd-ef01-3456789012cd",
+      "receiptHandle": "AQEBwJnKyrJ...",
+      "body": {
+        "type": "user.recommendation.generated",
+        "userId": "usr_11111",
+        "jobIds": ["job_101", "job_102"],
+        "timestamp": "2024-01-15T14:15:00.000Z",
+        "correlationId": "corr_ghi789"
+      },
+      "attributes": {
+        "ApproximateReceiveCount": "4",
+        "SentTimestamp": "1705327500000",
+        "SenderId": "AROAEXAMPLEID:plooral-api-task",
+        "ApproximateFirstReceiveTimestamp": "1705327500456"
+      },
+      "failureReason": "Lambda timeout",
+      "lastError": "Task timed out after 30.00 seconds",
+      "note": "SAFE TO RETRY - Lambda timeout during high database load"
+    },
+    {
+      "messageId": "d4e5f6a7-8901-23de-f012-4567890123de",
+      "receiptHandle": "AQEBwJnKyrK...",
+      "body": {
+        "type": "job.posted",
+        "employerId": "emp_999",
+        "jobId": "job_789",
+        "timestamp": "2024-01-15T14:16:00.000Z",
+        "correlationId": "corr_jkl012"
+      },
+      "attributes": {
+        "ApproximateReceiveCount": "4",
+        "SentTimestamp": "1705327560000",
+        "SenderId": "AROAEXAMPLEID:plooral-api-task",
+        "ApproximateFirstReceiveTimestamp": "1705327560789"
+      },
+      "failureReason": "Database query timeout",
+      "lastError": "QueryTimeout: Query exceeded 30000ms timeout",
+      "note": "SAFE TO RETRY - Database overwhelmed during incident"
+    },
+    {
+      "messageId": "e5f6a7b8-9012-34ef-0123-5678901234ef",
+      "receiptHandle": "AQEBwJnKyrL...",
+      "body": {
+        "type": "user.notification.send",
+        "userId": "usr_deleted_user",
+        "notificationType": "job_match",
+        "timestamp": "2024-01-15T14:17:00.000Z",
+        "correlationId": "corr_mno345"
+      },
+      "attributes": {
+        "ApproximateReceiveCount": "4",
+        "SentTimestamp": "1705327620000",
+        "SenderId": "AROAEXAMPLEID:plooral-api-task",
+        "ApproximateFirstReceiveTimestamp": "1705327620123"
+      },
+      "failureReason": "User not found",
+      "lastError": "NotFoundError: User usr_deleted_user does not exist",
+      "note": "DO NOT RETRY - User was deleted, notification is no longer relevant"
+    },
+    {
+      "messageId": "f6a7b8c9-0123-45f0-1234-6789012345f0",
+      "receiptHandle": "AQEBwJnKyrM...",
+      "body": {
+        "type": "user.recommendation.generated",
+        "userId": "usr_22222",
+        "jobIds": [],
+        "timestamp": "2024-01-15T14:17:30.000Z",
+        "correlationId": "corr_pqr678"
+      },
+      "attributes": {
+        "ApproximateReceiveCount": "4",
+        "SentTimestamp": "1705327650000",
+        "SenderId": "AROAEXAMPLEID:plooral-api-task",
+        "ApproximateFirstReceiveTimestamp": "1705327650456"
+      },
+      "failureReason": "Validation error",
+      "lastError": "ValidationError: jobIds array cannot be empty",
+      "note": "DO NOT RETRY - Invalid message, bug in producer code needs to be fixed"
+    },
+    {
+      "messageId": "a7b8c9d0-1234-56a1-2345-7890123456a1",
+      "receiptHandle": "AQEBwJnKyrN...",
+      "body": {
+        "type": "user.application.viewed",
+        "userId": "usr_33333",
+        "applicationId": "app_555",
+        "timestamp": "2024-01-15T14:18:00.000Z",
+        "correlationId": "corr_stu901"
+      },
+      "attributes": {
+        "ApproximateReceiveCount": "4",
+        "SentTimestamp": "1705327680000",
+        "SenderId": "AROAEXAMPLEID:plooral-api-task",
+        "ApproximateFirstReceiveTimestamp": "1705327680789"
+      },
+      "failureReason": "Database connection refused",
+      "lastError": "ECONNREFUSED: connect ECONNREFUSED 10.0.1.50:5432",
+      "note": "SAFE TO RETRY - Transient connection failure"
+    }
+  ],
+  "messageCategorySummary": {
+    "safeToRetry": {
+      "count": 198,
+      "percentage": 84.6,
+      "reasons": [
+        "Database connection timeout",
+        "Connection pool exhausted",
+        "Lambda timeout",
+        "Query timeout",
+        "Connection refused"
+      ]
+    },
+    "doNotRetry": {
+      "count": 36,
+      "percentage": 15.4,
+      "reasons": [
+        "User not found (deleted)",
+        "Validation error (invalid message)",
+        "Resource not found (job deleted)",
+        "Duplicate message (already processed)"
+      ]
+    }
+  },
+  "recommendations": [
+    "Filter messages by failure reason before reprocessing",
+    "Process 'safeToRetry' messages in batches during low-traffic period",
+    "Archive 'doNotRetry' messages for audit purposes",
+    "Consider implementing idempotency keys to prevent duplicate processing",
+    "Add monitoring for DLQ message age to catch issues earlier"
+  ]
+}
+
