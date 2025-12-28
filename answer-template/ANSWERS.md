@@ -593,41 +593,78 @@ A revisão da configuração da distribuição do CloudFront revelou várias fal
 
 > Summarize your understanding of the CloudWatch alarms across all scenarios.
 
-| Alarm | Purpose | Threshold | Response Action |
-|-------|---------|-----------|-----------------|
-| | | | |
+| Alarm | Purpose | Threshold (Exemplo) | Response Action |
+| :--- | :--- | :--- | :--- |
+| **`plooral-api-p99-latency`** | Medir o tempo de resposta para o 99º percentil dos usuários. É o principal indicador de degradação da performance sentida pelo cliente. | `> 2000ms` | Iniciar investigação imediata. Correlacionar com implantações recentes e a saúde de dependências críticas como o banco de dados. |
+| **`plooral-api-5xx-rate`** | Monitorar a taxa de erros do lado do servidor (ex: 502, 504). Indica uma falha parcial ou total do serviço em processar requisições. | `> 2%` por 5 minutos | Investigar a saúde da aplicação. É um forte sinal para iniciar uma reversão (rollback) se o alarme disparar após uma implantação. |
+| **`plooral-api-unhealthy-hosts`**| Acompanhar a saúde das tarefas ECS. Indica que as instâncias da aplicação estão falhando nas verificações de saúde do Load Balancer. | `> 0` hosts por 3 minutos | Acessar os logs dos contêineres para identificar a causa da falha (ex: `OOMKilled`, erro na inicialização da aplicação). |
+| **`plooral-tasks-queue-depth`** | Medir o acúmulo de mensagens na fila SQS. Sinaliza que os consumidores (workers) não estão conseguindo processar as tarefas na velocidade necessária. | `> 1000` mensagens | Investigar a saúde dos workers (ex: logs da função Lambda), pois geralmente é um sintoma de um problema downstream, como um banco de dados lento. |
+| **`plooral-aurora-cpu/connections`** | Monitorar os recursos vitais (CPU e conexões) do banco de dados. São indicadores diretos de gargalos ou consultas ineficientes. | CPU: `> 85%` <br>Conexões: `> 90% do máx.` | Tratar como um foco primário de investigação. Analisar o log de consultas lentas (slow query log) para identificar e otimizar as consultas problemáticas. |
+| **`plooral-waf-block-spike`** | Alertar sobre um aumento súbito de requisições bloqueadas pelo WAF. Pode indicar um ataque DDoS ou, como no cenário, uma "tempestade de retentativas" de usuários legítimos. | Aumento de `X%` em `Y` minutos | Analisar a amostra de requisições do WAF para determinar a natureza do tráfego (malicioso vs. falso-positivo) antes de tomar medidas drásticas. |
+
 
 ### IAM & Security Decisions
 
 > Summarize your security-related decisions and reasoning.
 
 ```
-Your answer here
+
+Minhas decisões de segurança foram guiadas pelo **Princípio do Menor Privilégio** e pela **defesa em profundidade**, com foco em quatro áreas principais:
+
+1.  **Controle de Acesso (IAM):**
+    *   **Decisão:** Substituí permissões genéricas (`*`) nas políticas de IAM por ações granulares e ARNs de recursos específicos. Corrigi relações de confiança que permitiam que entidades externas ou anônimas assumissem roles internas.
+    *   **Justificativa:** Limitar drasticamente o "raio de impacto" em caso de uma credencial ser comprometida, garantindo que um serviço só possa acessar os recursos estritamente necessários para sua função.
+
+2.  **Gerenciamento de Segredos:**
+    *   **Decisão:** Converti parâmetros sensíveis no SSM para `SecureString` criptografados com uma chave KMS gerenciada pelo cliente (CMK) e sugeri mover a senha do banco de dados para o AWS Secrets Manager.
+    *   **Justificativa:** Garantir que segredos nunca sejam armazenados em texto plano (criptografia em repouso) e habilitar a rotação automática de credenciais, eliminando o risco associado a segredos estáticos e de longa duração.
+
+3.  **Segurança de Borda (Edge Security):**
+    *   **Decisão:** Protegi a origem S3 do CloudFront com Origin Access Control (OAC), reforcei o uso de protocolos TLS modernos e adicionei uma política de cabeçalhos de segurança (Security Headers).
+    *   **Justificativa:** Impedir o acesso direto aos arquivos estáticos (bypassando o WAF), proteger contra ataques de downgrade e mitigar vulnerabilidades no lado do cliente, como XSS e clickjacking.
+
+4.  **Filtragem de Tráfego (WAF):**
+    *   **Decisão:** Substituí regras personalizadas e de bloqueio geográfico por regras gerenciadas pela AWS, mais inteligentes e menos propensas a erros.
+    *   **Justificativa:** Reduzir o bloqueio de tráfego legítimo (falsos-positivos), simplificar a manutenção da ACL e, ao mesmo tempo, manter uma proteção robusta contra ameaças comuns e conhecidas (SQLi, XSS, IPs maliciosos).
+
+Em resumo, o objetivo foi transformar a postura de segurança de reativa e excessivamente permissiva para uma abordagem proativa, em camadas e com privilégios mínimos, garantindo a confidencialidade e a integridade dos dados.
+
 ```
 
 ### 30-Day Onboarding Plan Overview
 
 > Brief overview of your onboarding plan (details in ONBOARDING_30_DAYS.md).
 
-**Week 1:**
-- 
+**Week 1: Imersão e Conhecimento**
+*   Foco em absorver a cultura da empresa, conhecer a equipe e entender a arquitetura de alto nível.
+*   Configuração de acessos e ambiente de desenvolvimento.
+*   Sessões de pareamento para observar as ferramentas e processos em ação, sem a pressão de entregas.
 
-**Week 2:**
-- 
+**Week 2: Contribuição Guiada**
+*   Trabalhar na primeira tarefa de baixo risco (ex: melhoria em documentação ou ajuste em script).
+*   Acompanhar um engenheiro sênior na execução de um procedimento do runbook.
+*   Realizar o primeiro deploy em ambiente de _staging_ com supervisão, entendendo o pipeline de CI/CD na prática.
 
-**Week 3:**
-- 
+**Week 3: Aprofundamento e Início da Autonomia**
+*   Assumir a responsabilidade por uma pequena feature ou correção de bug, do desenvolvimento ao deploy.
+*   Aprofundar o conhecimento em uma área específica do sistema, como o pipeline de monitoramento ou as políticas de segurança.
+*   Participar ativamente das discussões técnicas da equipe.
 
-**Week 4:**
-- 
+**Week 4: Consolidação e Próximos Passos**
+*   Começar a acompanhar o rodízio de plantão (_shadowing_) para entender o processo de resposta a incidentes.
+*   Contribuir de forma autônoma para as tarefas do sprint atual.
+*   Reunião de feedback para alinhar expectativas e planejar os próximos 60 dias. 
 
 ### Risks & Mitigations
 
 > What ongoing risks do you see in this environment?
 
 | Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| | | | |
+| :--- | :--- | :--- | :--- |
+| **Falhas no processo de revisão e teste pré-implantação** | Alta | Crítico | Implementar revisão obrigatória por DBA, testes de carga em ambiente de _staging_ e usar implantações canário (_canary deployments_) para novas funcionalidades de alto risco. |
+| **Dívida técnica de segurança (IAM, SSM, WAF)** | Alta | Alto | Realizar uma auditoria de segurança completa na conta AWS. Integrar ferramentas de _scan_ de IaC (ex: `tfsec`, `checkov`) no pipeline para prevenir configurações inseguras antes do deploy. |
+| **Falta de governança e expertise em banco de dados** | Média | Crítico | Formalizar a função de DBA (contratar ou designar um responsável). Exigir aprovação formal de um especialista em banco de dados para todas as migrações de esquema e consultas complexas. |
+| **Complexidade da arquitetura vs. maturidade do monitoramento** | Média | Alto | Investir em **observabilidade**: implementar tracing distribuído (X-Ray), logs estruturados e realizar _"Game Days"_ para simular falhas, identificar pontos cegos e validar a eficácia dos alertas. |
 
 ### Optional Improvements
 
@@ -643,11 +680,11 @@ Your answer here
 
 Before submitting your work, verify:
 
-- [ ] All scenario questions answered
+- [X] All scenario questions answered
 - [ ] Corrected configs committed
-- [ ] RUNBOOK.md created
-- [ ] ONBOARDING_30_DAYS.md created
-- [ ] Assumptions documented
-- [ ] Reasoning is explicit throughout
-- [ ] Repository is accessible and ready to share
+- [X] RUNBOOK.md created
+- [X] ONBOARDING_30_DAYS.md created
+- [X] Assumptions documented
+- [X] Reasoning is explicit throughout
+- [X] Repository is accessible and ready to share
 
