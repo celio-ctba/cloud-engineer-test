@@ -15,9 +15,35 @@
 
 > List any assumptions you made while working through the scenarios. Be explicit — we need to understand your reasoning context.
 
-1. 
-2. 
-3. 
+1. A infraestrutura está 100% na AWS: Todas as soluções, análises e
+      ferramentas propostas são baseadas no ecossistema da Amazon Web Services
+      (ECS, Aurora, SQS, CodePipeline, IAM, etc.), presumindo que não há
+      componentes críticos em outra nuvem ou on-premises.
+
+2. Cultura de DevOps Madura: Assume-se que a empresa valoriza ou aspira a ter
+      uma cultura de DevOps que preza por automação (CI/CD), Infraestrutura como
+      Código (IaC), monitoramento robusto e documentação formal (Runbooks,
+      Postmortems).
+
+3. Princípio do Menor Privilégio é um Requisito: As correções propostas nas
+      políticas de IAM e configurações de segurança partem do pressuposto de que
+      a organização exige a aplicação estrita do Princípio do Menor Privilégio.
+
+4. O Banco de Dados é o Coração do Sistema: A análise de incidentes e os
+      planos de migração assumem que o banco de dados Aurora é um componente
+      monolítico e de alta criticidade, onde o desempenho e a contenção de
+      recursos têm um impacto cascata em toda a aplicação.
+
+5. Comunicação e Monitoramento Padronizados: Presume-se que o Slack é a
+      ferramenta oficial para comunicação de incidentes (#prod-alerts) e que o
+      CloudWatch é a fonte central e confiável para métricas, logs e alarmes.
+
+6. A Aplicação é State-aware no Banco de Dados: A lógica de negócio,
+      incluindo a causa do incidente (consulta de recomendação), reside
+      primariamente na aplicação e em suas interações com o banco de dados, em
+      vez de uma arquitetura de microsserviços mais distribuída onde a causa
+      raiz poderia estar em outro serviço.
+    
 
 ---
 
